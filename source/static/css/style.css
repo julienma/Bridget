@@ -1,0 +1,157 @@
+html {
+  margin: 0px;
+  padding: 0px;
+  background-color: #ffffff;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+.container .row-fluid .span6 .heading {
+  font-size: 18pt;
+}
+.container .row-fluid .span6 .well p {
+  font-size: 15px;
+}
+.container {
+  margin-top: 10px;
+}
+.container .row-fluid .span6 .form-inline .btn {
+  padding: 4px 14px 4px 14px;
+  font-size: 11pt;
+}
+.container .row-fluid .span6 .form-inline input.textinput {
+  font-size: 15px;
+  border-radius: 3px;
+}
+.container .row-fluid .span6 .well .dom-link {
+  font-size: 15px;
+}
+.container .row-fluid .span6 .well .heading {
+  font-size: 27pt;
+}
+.container .row-fluid .span6 select {
+  margin: 0px 0px 9px 0px;
+  font-size: 15px;
+  border: 1px solid #bbbbbb;
+  width: 200px;
+}
+
+/*Custom styles*/
+
+#movingBallG{
+  position:relative;
+  width:64px;
+  height:5px;
+  margin: 5px 10px 5px 10px;
+  top: 7px;
+}
+
+.movingBallG{
+  background-color:#3A87AD;
+  position:absolute;
+  top:0;
+  left:0;
+  width:5px;
+  height:5px;
+  -moz-border-radius:3px;
+  -moz-animation-name:bounce_movingBallG;
+  -moz-animation-duration:1.3s;
+  -moz-animation-iteration-count:infinite;
+  -moz-animation-direction:linear;
+  -webkit-border-radius:3px;
+  -webkit-animation-name:bounce_movingBallG;
+  -webkit-animation-duration:1.3s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-direction:linear;
+  -ms-border-radius:3px;
+  -ms-animation-name:bounce_movingBallG;
+  -ms-animation-duration:1.3s;
+  -ms-animation-iteration-count:infinite;
+  -ms-animation-direction:linear;
+  -o-border-radius:3px;
+  -o-animation-name:bounce_movingBallG;
+  -o-animation-duration:1.3s;
+  -o-animation-iteration-count:infinite;
+  -o-animation-direction:linear;
+  border-radius:3px;
+  animation-name:bounce_movingBallG;
+  animation-duration:1.3s;
+  animation-iteration-count:infinite;
+  animation-direction:linear;
+}
+
+@-moz-keyframes bounce_movingBallG{
+  0%{
+    left:0px;
+  }
+
+  50%{
+    left:59px;
+  }
+
+  100%{
+    left:0px;
+  }
+
+}
+
+@-webkit-keyframes bounce_movingBallG{
+  0%{
+    left:0px;
+  }
+
+  50%{
+    left:59px;
+  }
+
+  100%{
+    left:0px;
+  }
+
+}
+
+@-ms-keyframes bounce_movingBallG{
+  0%{
+    left:0px;
+  }
+
+  50%{
+    left:59px;
+  }
+
+  100%{
+    left:0px;
+  }
+
+}
+
+@-o-keyframes bounce_movingBallG{
+  0%{
+    left:0px;
+  }
+
+  50%{
+    left:59px;
+  }
+
+  100%{
+    left:0px;
+  }
+
+}
+
+@keyframes bounce_movingBallG{
+  0%{
+    left:0px;
+  }
+
+  50%{
+    left:59px;
+  }
+
+  100%{
+    left:0px;
+  }
+
+}
