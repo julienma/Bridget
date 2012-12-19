@@ -12,16 +12,18 @@ Watch local template folder for changes, and auto-upload template to an associat
 
 Make sure the _package.command script is executable
 
-> chmod u+x _package.command
+```
+chmod u+x _package.command
+```
 
-Make sure your package.json reference the correct file
+Make sure your package.json reference your entry point file, e.g:
 ```
 {
-  "main": "source/static/test-nodejs.html"
+  "main": "source/static/index.html"
 }
 ```
 
-Then run it, it will package a .nw app and launch it.
+Then run it, it will package an _app.nw and launch it through node-webkit.
 
 ## Usage
 
