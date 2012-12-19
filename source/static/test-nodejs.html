@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Limelight|Flamenco|Federo|Yesteryear|Josefin Sans|Spinnaker|Sansita One|Handlee|Droid Sans|Oswald:400,300,700"
+  media="screen" rel="stylesheet" type="text/css" />
+
+  <link href="css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css"
+  />
+  <link href="css/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <!-- Typekit fonts require an account and a kit containing the fonts used. see https://typekit.com/plans
+    for details. <script type="text/javascript" src="//use.typekit.net/YOUR_KIT_ID.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+-->
+
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<title>Bridget</title>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row-fluid">
+      <span class="span12">
+
+        <p>  We are using node.js <script>document.write(process.version)</script></p>
+
+        <div id="content" class="alert alert-info fade in">
+          Loading...
+        </div>
+
+      </span>
+    </div>
+  </div>
+
+
+  <!-- TEST NODE.JS -->
+  <script>
+
+  function disp(div, message, alertType){
+    var myDiv = $(div);
+    myDiv.html(message);
+    myDiv.removeClass('alert-success alert-error alert-info');
+    myDiv.addClass('alert' + ((alertType) ? '-' + alertType : ''));
+  }
+
+  var fs = require('fs');
+  fs.readdir('./source/static', function(err, files) {
+    if(err) {
+      disp('#content', 'Error readdir', 'error');
+      return;
+    }
+    var msg;
+    files.forEach(function(file) {
+      msg += file + "<br />\n";
+    });
+    disp('#content', msg, 'success');
+  });
+
+  // Load native UI library
+  var gui = require('nw.gui');
+
+  // Create a tray icon
+  var tray = new gui.Tray({ title: 'Bridget', icon: 'tray-icon.png' });
+
+  // Give it a menu
+  var menu = new gui.Menu();
+  menu.append(new gui.MenuItem({ type: 'checkbox', label: 'box1' }));
+  tray.menu = menu;
+
+  // Remove the tray
+  // tray.remove();
+  // tray = null;
+
+  </script>
+<!-- /TEST NODE.JS -->
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Bridget",
+  "main": "source/static/test-nodejs.html",
+
+  "description": "Bridge Template Upload",
+  "version": "0.1",
+  "window": {
+    "title":"Bridget",
+    "icon": "package.png",
+    "toolbar": false,
+    "width": 800,
+    "height": 500,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 200,
+    "max_width": 800,
+    "max_height": 600,
+    "frame": true // false = frameless
+  }
+
+}
