@@ -42,6 +42,10 @@
   <!-- TEST NODE.JS -->
   <script>
 
+/*
+MISC SCRIPT
+*/
+
   function disp(div, message, alertType){
     var myDiv = $(div);
     myDiv.html(message);
@@ -49,18 +53,75 @@
     myDiv.addClass('alert' + ((alertType) ? '-' + alertType : ''));
   }
 
+
+/*
+FS
+*/
+
   var fs = require('fs');
-  fs.readdir('./source/static', function(err, files) {
-    if(err) {
-      disp('#content', 'Error readdir', 'error');
+
+  function listDir (dirName, callback) {
+      fs.readdir(dirName, function(err, files) {
+      var msg;
+        if(err) {
+          callback('Error reading '+dirName, 'error');
+          return;
+        }
+        files.forEach(function(file) {
+          msg += file + "<br />\n";
+        });
+        callback(msg, 'success');
+      });
+  }
+
+</script>
+<button id="listdir" class="btn">Listdir!</button>
+<script>
+$("#listdir").click(function (){
+  listDir('./source/static', function(result, alertType) {
+    disp('#content', result, alertType);
+  });
+});
+
+
+/*
+NCONF - SAVE CONF
+*/
+
+
+var nconf = require('nconf');
+
+  var settingsFile = process.env['HOME'] + '/bridget_settings.json';
+
+  nconf.file(settingsFile);
+  nconf.load();
+
+  console.log(nconf.get('time'));
+
+  nconf.set('id', 0);
+  nconf.set('apikey', 'azertyuiopmlkjhgfdsq');
+  nconf.set('server:url', 'https://api-c.leadformance.com');
+  nconf.set('server:name', 'Client QA (.c)');
+  nconf.set('template:id', '152');
+  nconf.set('template:name', 'Template 1');
+  nconf.set('time', process.hrtime()[0])
+
+  console.log(nconf.get('server'));
+  console.log(nconf.get('server:url'));
+
+
+  nconf.save(function (err) {
+    if (err) {
+      console.error(err.message);
       return;
     }
-    var msg;
-    files.forEach(function(file) {
-      msg += file + "<br />\n";
-    });
-    disp('#content', msg, 'success');
+    console.log('Configuration saved successfully in ' + settingsFile);
   });
+
+
+/*
+NATIVE UI - TRAY, MENU
+*/
 
   // Load native UI library
   var gui = require('nw.gui');
