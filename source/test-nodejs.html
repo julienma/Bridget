@@ -71,7 +71,9 @@ FS
   }
 
 </script>
-<button id="listdir" class="btn">Listdir!</button>
+<div>
+  <button id="listdir" class="btn">Listdir!</button>
+</div>
 <script>
 $("#listdir").click(function (){
   listDir('./source/static', function(result, alertType) {
@@ -85,15 +87,31 @@ NCONF - SAVE CONF
 */
 
 
-var nconf = require('nconf');
 
   // var settingsPath = process.env['HOME'];
   var settingsPath = '/Users/julien/Dropbox/dev/NodeJS/Bridget';
-  var settingsFile = settingsPath + '/bridget_settings.json';
+  var settingsFile = settingsPath + '/_bridget_settings.json';
+
+var settings = require('./nodejs/settings')
+
+</script>
+<div>
+  <button id="read-settings" class="btn">Read!</button>
+  <button id="save-settings" class="btn">Save!</button>
+</div>
+<script>
+$("#read-settings").click(function (){
+  settings.read(settingsFile);
+});
+$("#save-settings").click(function (){
+  settings.save(settingsFile);
+});
+
+
+/*  var nconf = require('nconf');
 
   nconf.file(settingsFile);
   nconf.load();
-
   console.log(nconf.get('time'));
 
   nconf.set('id', 0);
@@ -102,11 +120,9 @@ var nconf = require('nconf');
   nconf.set('server:name', 'Client QA (.c)');
   nconf.set('template:id', '152');
   nconf.set('template:name', 'Template 1');
-  nconf.set('time', process.hrtime()[0])
-
+  nconf.set('time', process.hrtime()[0]);
   console.log(nconf.get('server'));
   console.log(nconf.get('server:url'));
-
 
   nconf.save(function (err) {
     if (err) {
@@ -115,7 +131,7 @@ var nconf = require('nconf');
     }
     console.log('Configuration saved successfully in ' + settingsFile);
   });
-
+*/
 
 /*
 NATIVE UI - TRAY, MENU
