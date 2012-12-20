@@ -24,6 +24,11 @@ $(document).ready(function(){
       id:'s',
       url:'https://api-s.leadformance.com',
       name:'Staging (.s)'
+    },
+    {
+      id:'sandbox',
+      url:'https://api-sandbox.leadformance.com',
+      name:'Sandbox (.sandbox)'
     }
   ];
 
