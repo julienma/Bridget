@@ -6,6 +6,6 @@ BASEDIR=$(dirname $0)
 cd $BASEDIR
 
 rm _app.nw
-zip -r _app.nw . -x *.command*
+zip -r _app.nw . -x _*.*
 /Applications/node-webkit.app/Contents/MacOS/node-webkit ./_app.nw
 exit
