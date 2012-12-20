@@ -1,6 +1,6 @@
 {
   "name": "Bridget",
-  "main": "source/static/test-nodejs.html",
+  "main": "source/test-nodejs.html",
 
   "description": "Bridge Template Upload",
   "version": "0.1",
