@@ -14,37 +14,35 @@ function read (callback){
   callback('time: ' + nconf.get('time') + ' from ' + currentSettingsFile, 'info');
 }
 
-function save (callback){
+function save (templateSettings, callback){
 
+  // check if all the settings are set
+  for (var name in templateSettings) {
+    console.log(name + ": " + templateSettings[name]);
+    if(!templateSettings[name] || templateSettings[name]===''){
+      callback(name + ' is not defined');
+      return;
+    }
+  }
 
-  // TEST
-  var path = '/Users/julien/template/' + Math.floor((Math.random()*3)+1);
-  var serverId = 'c'; // or 'c', 'i', etc.
-  //nconf.set(path + ':path', '/Users/julien/template/');
-  nconf.clear(path + ':q');
-  nconf.set(path + ':' + serverId + ':apikey', 'azertyuiopmlkjhgfdsq');
-  nconf.set(path + ':' + serverId + ':template:id', '152' + process.hrtime()[0]);
-  nconf.set(path + ':' + serverId + ':template:name', 'Template 1');
+  // clear the current entry to make sure there is only 1 server for each watched path
+  // this will have to be removed and worked around if we want to manage multiple servers (c, q, s, etc.) for each path
+  nconf.clear(templateSettings.path);
 
-
-/*
-  nconf.set('id', 0);
-  nconf.set('apikey', 'azertyuiopmlkjhgfdsq');
-  nconf.set('server:url', 'https://api-c.leadformance.com');
-  nconf.set('server:name', 'Client QA (.c)');
-  nconf.set('template:id', '152');
-  nconf.set('template:name', 'Template 1');
-  nconf.set('time', process.hrtime()[0]);
-*/
+  // set the settings for the current path
+  nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':apikey', templateSettings.apiKey);
+  nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':template:id', templateSettings.templateId);
+  nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':template:name', templateSettings.templateName);
 
   nconf.save(function (err){
     if (err) {
       console.error(err.message);
-      callback('Error: ' + err.message, 'error');
+      callback(err.message);
+      //callback(err.message, 'Error: ' + err.message, 'error');
       return;
     }
     console.log('Configuration saved successfully in ' + currentSettingsFile);
-    callback('Configuration saved successfully in ' + currentSettingsFile, 'success');
+    callback(undefined, currentSettingsFile);
   });
 }
 
