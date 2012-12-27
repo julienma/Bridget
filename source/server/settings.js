@@ -15,7 +15,17 @@ function read (callback){
 }
 
 function save (callback){
-  nconf.set('time', process.hrtime()[0]);
+
+
+  // TEST
+  var path = '/Users/julien/template/' + Math.floor((Math.random()*3)+1);
+  var serverId = 'c'; // or 'c', 'i', etc.
+  //nconf.set(path + ':path', '/Users/julien/template/');
+  nconf.clear(path + ':q');
+  nconf.set(path + ':' + serverId + ':apikey', 'azertyuiopmlkjhgfdsq');
+  nconf.set(path + ':' + serverId + ':template:id', '152' + process.hrtime()[0]);
+  nconf.set(path + ':' + serverId + ':template:name', 'Template 1');
+
 
 /*
   nconf.set('id', 0);

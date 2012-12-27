@@ -1,3 +1,9 @@
+.container {
+  margin-top: 10px;
+}
+
+/*Easel.io export*/
+/*
 html {
   margin: 0px;
   padding: 0px;
@@ -7,35 +13,38 @@ body {
   margin: 0;
   padding: 0;
 }
-.container .row-fluid .span6 .heading {
+.container h1 {
+  font-size: 27pt;
+}
+.container h2 {
+  font-size: 24pt;
+}
+.container h3 {
   font-size: 18pt;
 }
-.container .row-fluid .span6 .well p {
+p {
   font-size: 15px;
 }
 .container {
   margin-top: 10px;
 }
-.container .row-fluid .span6 .form-inline .btn {
+.btn {
   padding: 4px 14px 4px 14px;
   font-size: 11pt;
 }
-.container .row-fluid .span6 .form-inline input.textinput {
+.form-inline .textinput {
   font-size: 15px;
   border-radius: 3px;
 }
-.container .row-fluid .span6 .well .dom-link {
+.dom-link {
   font-size: 15px;
 }
-.container .row-fluid .span6 .well .heading {
-  font-size: 27pt;
-}
-.container .row-fluid .span6 select {
+select {
   margin: 0px 0px 9px 0px;
   font-size: 15px;
   border: 1px solid #bbbbbb;
-  width: 200px;
 }
+*/
 
 /*Custom styles*/
 
@@ -85,73 +94,58 @@ body {
   0%{
     left:0px;
   }
-
   50%{
     left:59px;
   }
-
   100%{
     left:0px;
   }
-
 }
 
 @-webkit-keyframes bounce_movingBallG{
   0%{
     left:0px;
   }
-
   50%{
     left:59px;
   }
-
   100%{
     left:0px;
   }
-
 }
 
 @-ms-keyframes bounce_movingBallG{
   0%{
     left:0px;
   }
-
   50%{
     left:59px;
   }
-
   100%{
     left:0px;
   }
-
 }
 
 @-o-keyframes bounce_movingBallG{
   0%{
     left:0px;
   }
-
   50%{
     left:59px;
   }
-
   100%{
     left:0px;
   }
-
 }
 
 @keyframes bounce_movingBallG{
   0%{
     left:0px;
   }
-
   50%{
     left:59px;
   }
-
   100%{
     left:0px;
   }
-
 }

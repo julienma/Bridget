@@ -39,7 +39,7 @@ chmod u+x _package.command
 Make sure your package.json reference your entry point file, e.g:
 ```
 {
-  "main": "source/static/index.html"
+  "main": "source/index.html"
 }
 ```
 
