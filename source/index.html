@@ -29,9 +29,21 @@
 
         <span class="span12">
 
-          <!-- Step 1: Remote template slot -->
+          <!-- Step 1: Local template directory -->
+          <div id="step2">
+          <h2>Watch template folder</h2>
+            <div id="alert" class="alert alert-info fade in">
+                Browse to the root of your local template folder
+            </div>
+            <form id="local-folder-form" class="form-inline" action="">
+              <button class="btn">Browse...</button>
+              <input style="display:none;" id="browseLocalFolder" type="file" nwdirectory />
+            </form>
+          </div>
+
+          <!-- Step 2: Remote template slot -->
           <div id="step1">
-            <h2>Remote template slot</h2>
+            <h2>Upload to remote template slot</h2>
             <div id="alert" class="alert alert-info fade in">
               Please fill in your <strong>write_templates</strong> API key
             </div>
@@ -56,18 +68,7 @@
             </form>
           </div>
 
-          <!-- Step 2: Local template directory -->
-          <div id="step2">
-          <h2>Local template directory</h2>
-            <div id="alert" class="alert alert-info fade in">
-                Browse to the root of your local template folder
-            </div>
-            <form id="local-folder-form" class="form-inline" action="">
-              <button class="btn">Browse...</button>
-              <input style="display:none;" id="browseLocalFolder" type="file" nwdirectory />
-            </form>
-          </div>
-
+          <!-- Last step: save! -->
           <div class="well">
             <button id="save-settings" class="btn btn-primary btn-large" disabled="disabled">Save</button>
           </div>
