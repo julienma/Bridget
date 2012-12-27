@@ -82,57 +82,6 @@ $("#listdir").click(function (){
 });
 
 
-/*
-NCONF - SAVE CONF
-*/
-
-// require local Settings package
-var settings = require('./server/settings')
-
-// set the settings file to use
-// var settingsPath = process.env['HOME'];
-var settingsPath = '/Users/julien/Dropbox/dev/NodeJS/Bridget';
-settings.file(settingsPath + '/_bridget_settings.json');
-
-</script>
-<div>
-  <button id="read-settings" class="btn">Read!</button>
-  <button id="save-settings" class="btn">Save!</button>
-</div>
-<script>
-// bind read & save buttons to settings.read and .save functions
-$("#read-settings").click(function (){
-  settings.read(function (result, alertType){
-    disp('#content', result, alertType);
-  });
-});
-$("#save-settings").click(function (){
-  settings.save(function (result, alertType){
-    disp('#content', result, alertType);
-  });
-});
-
-
-
-/*
-NATIVE UI - TRAY, MENU
-*/
-
-  // Load native UI library
-  var gui = require('nw.gui');
-
-  // Create a tray icon
-  var tray = new gui.Tray({ title: 'Bridget', icon: 'tray-icon.png' });
-
-  // Give it a menu
-  var menu = new gui.Menu();
-  menu.append(new gui.MenuItem({ type: 'checkbox', label: 'box1' }));
-  tray.menu = menu;
-
-  // Remove the tray
-  // tray.remove();
-  // tray = null;
-
   </script>
 <!-- /TEST NODE.JS -->
 

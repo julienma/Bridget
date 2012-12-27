@@ -14,6 +14,17 @@ function read (callback){
   callback('time: ' + nconf.get('time') + ' from ' + currentSettingsFile, 'info');
 }
 
+/*
+HOW TO USE:
+
+settings.save(templateSettings, function (err, file){
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log('Configuration saved successfully in ' + file);
+});
+*/
 function save (templateSettings, callback){
 
   // check if all the settings are set
