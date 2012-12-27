@@ -10,4 +10,3 @@ var settings = require('./server/settings');
 var settingsPath = '/Users/julien/Dropbox/dev/NodeJS/Bridget';
 settings.file(settingsPath + '/_bridget_settings.json');
 
-console.log("index.js loaded");

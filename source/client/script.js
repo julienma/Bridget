@@ -201,7 +201,7 @@ $(document).ready(function(){
     chooser.change(function(evt) {
       if ($(this).val()) {
         console.log($(this).val());
-        displayAlert('#step2 #alert', 'Using <strong>' + $(this).val() + '</strong> as local folder', 'success');
+        displayAlert('#step2 #alert', 'Using <strong>' + $(this).val() + '</strong>', 'success');
         // save the path settings
         templateSettings.path = $(this).val();
         checkIfEnableSave();
