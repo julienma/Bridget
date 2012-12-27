@@ -16,7 +16,8 @@
     "min_height": 450,
     "max_width": 800,
     "max_height": 700,
-    "frame": true // false = frameless
+    "frame": true, // false = frameless
+    "show": false // do NOT display the window after loading. Will need to be loaded elsewhere (e.g. from tray menu)
   }
 
 }
