@@ -9,13 +9,13 @@
     "title":"Bridget",
     "icon": "package.png",
     "toolbar": false,
-    "width": 800,
-    "height": 500,
+    "width": 600,
+    "height": 480,
     "position": "mouse",
-    "min_width": 400,
-    "min_height": 200,
+    "min_width": 500,
+    "min_height": 450,
     "max_width": 800,
-    "max_height": 600,
+    "max_height": 700,
     "frame": true // false = frameless
   }
 
