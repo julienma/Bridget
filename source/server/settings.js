@@ -8,10 +8,16 @@ function file (f){
 }
 
 function read (callback){
-  nconf.load();
-
-  console.log('time: ' + nconf.get('time') + ' from ' + currentSettingsFile);
-  callback('time: ' + nconf.get('time') + ' from ' + currentSettingsFile, 'info');
+  nconf.load(function () {
+    var conf = nconf.get();
+    if (conf){
+      // TODO - loop through all the values, and start watchr for each
+      console.log(dump(conf));
+      callback(undefined, conf);
+    } else {
+      callback('Error loading settings from ' + currentSettingsFile);
+    }
+  });
 }
 
 /*
