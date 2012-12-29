@@ -12,7 +12,6 @@ function read (callback){
     var conf = nconf.get();
     if (conf){
       // TODO - loop through all the values, and start watchr for each
-      console.log(dump(conf));
       callback(undefined, conf);
     } else {
       callback('Error loading settings from ' + currentSettingsFile);
