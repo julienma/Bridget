@@ -9,10 +9,36 @@ function file (f){
 
 function read (callback){
   nconf.load(function () {
+    var loadedSettings = [{}];
+    var i = -1;
+
     var conf = nconf.get();
     if (conf){
       // TODO - loop through all the values, and start watchr for each
-      callback(undefined, conf);
+
+      for(var key in conf) {
+        i++;
+        loadedSettings.push({});
+        loadedSettings[i]['path'] = key;
+
+        console.log('key: ' + key + '\n' + 'value: ' + conf[key]);
+        for(var key2 in conf[key]) {
+          loadedSettings[i]['serverId'] = key2;
+          for(var key3 in conf[key][key2]) {
+            loadedSettings[i]['apiKey'] = conf[key][key2]['apikey'];
+            loadedSettings[i]['templateId'] = conf[key][key2][key3]['id'];
+            loadedSettings[i]['templateName'] = conf[key][key2][key3]['name'];
+          }
+        }
+        console.log('- ' + i + ' -------------------');
+        console.log('path: ' + loadedSettings[i]['path'] + ' - serverId: ' + loadedSettings[i]['serverId'] + ' - apiKey: ' + loadedSettings[i]['apiKey'] + ' - templateId: ' + loadedSettings[i]['templateId'] + ' - templateName: ' + loadedSettings[i]['templateName']);
+      }
+
+      // DEBUG
+      //console.log(simpleObjInspect(conf));
+
+
+      callback(undefined, loadedSettings);
     } else {
       callback('Error loading settings from ' + currentSettingsFile);
     }
