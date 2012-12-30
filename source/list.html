@@ -52,9 +52,12 @@ window.onload = function() {
       return;
     }
     console.log('Configuration loaded successfully: ' + loadedSettings);
-  });
+    addTrayMenu(loadedSettings);
 
-  document.write('Loaded!<br>' + loadedSettings);
+    // DEBUG
+    document.write('Loaded!<br>' + loadedSettings);
+
+  });
 
 }
 </script>
