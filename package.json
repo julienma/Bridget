@@ -1,7 +1,7 @@
 {
   "name": "Bridget",
-  //"main": "source/index.html",
-  "main": "source/list.html",
+  // "node-main": "source/server/init.js",
+  "main": "source/init.html",
 
   "description": "Bridge Template Upload",
   "version": "0.1",
@@ -17,7 +17,7 @@
     "max_width": 800,
     "max_height": 700,
     "frame": true, // false = frameless
-    "show": true // do NOT display the window after loading. Will need to be loaded elsewhere (e.g. from tray menu)
+    "show": false // do NOT display the window after loading. Will need to be loaded elsewhere (e.g. from tray menu)
   }
 
 }

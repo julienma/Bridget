@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Limelight|Flamenco|Federo|Yesteryear|Josefin Sans|Spinnaker|Sansita One|Handlee|Droid Sans|Oswald:400,300,700"
+    media="screen" rel="stylesheet" type="text/css" />
+ -->
+    <link href="css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css"
+    />
+    <link href="css/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <!-- Typekit fonts require an account and a kit containing the fonts used. see https://typekit.com/plans
+    for details. <script type="text/javascript" src="//use.typekit.net/YOUR_KIT_ID.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  -->
+    <script src="client/jquery-1.8.3.min.js"></script>
+    <script src="client/bootstrap.min.js"></script>
+    <script src="client/server-list.js"></script>
+    <script src="server/init.js"></script>
+
+    <title>Bridget | Init</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row-fluid">
+         <span class="span12">
+          <div class="well">
+            <p>Loading...</p>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    window.onload = function() {
+
+      // set the settings file to use
+      // var settingsPath = process.env['HOME'];
+      // TODO: change that after debug
+      var settingsPath = '/Users/julien/Dropbox/dev/NodeJS/Bridget';
+      settings.file(settingsPath + '/_bridget_settings.json');
+
+      settings.read(function (err, loadedSettings){
+        if (err) {
+          console.error(err);
+          return;
+        }
+        // if settings were correctly loaded
+        console.log('Configuration loaded successfully: ' + loadedSettings);
+        // create tray menu
+        addTrayMenu(loadedSettings);
+        // get every paths loaded
+        var pathsToWatch = new Array();
+        for (var i=0; i<loadedSettings.length-1; i++) {
+          pathsToWatch.push(loadedSettings[i]['path']);
+        }
+        // and watch them
+        watch.start(pathsToWatch);
+
+      });
+
+    }
+    </script>
+
+  </body>
+
+</html>

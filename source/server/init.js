@@ -1,16 +1,8 @@
 
-/*
-NCONF - SAVE CONF
-*/
-
-// require local Settings package
-var settings = require('./server/settings');
-
-// set the settings file to use
-// var settingsPath = process.env['HOME'];
-var settingsPath = '/Users/julien/Dropbox/dev/NodeJS/Bridget';
-settings.file(settingsPath + '/_bridget_settings.json');
-
+// require local Settings package (nconf)
+var settings = require('./server/settings.js');
+// require local Watch package (watchr)
+var watch = require('./server/watch.js');
 
 /*
 NATIVE UI - TRAY, MENU
@@ -19,7 +11,10 @@ NATIVE UI - TRAY, MENU
   // Load native UI library
   var gui = require('nw.gui');
   // Get the current window
-  var win = gui.Window.get();
+  var win = gui.Window.get(
+    window.open('add.html')
+  );
+
   // Create a tray icon
   var tray = new gui.Tray({
     //title: 'Bridget',
@@ -36,6 +31,13 @@ NATIVE UI - TRAY, MENU
       click: function() {
         // TODO: start once the upload script
         console.log(this.label);
+
+        // TEST DEBUG
+        win.window.location.href = 'test-nodejs.html';
+        win.show();
+        win.focus();
+
+
       }
     }));
     submenu.append(new gui.MenuItem({
@@ -50,6 +52,11 @@ NATIVE UI - TRAY, MENU
       click: function() {
         // TODO: remove from watchr and delete from nconf
         console.log(this.label);
+        var doDelete = confirm('Do you want to delete this watched folder?');
+        // if confirmed
+        if (doDelete){
+          alert('deleting ' + loadedSettings[i]['templateName']);
+        }
       }
     }));
 
@@ -63,7 +70,7 @@ NATIVE UI - TRAY, MENU
     });
     menu.append(item);
 
-    console.log("Menu - " + 'path: ' + loadedSettings[i]['path'] + ' - serverId: ' + loadedSettings[i]['serverId'] + ' - apiKey: ' + loadedSettings[i]['apiKey'] + ' - templateId: ' + loadedSettings[i]['templateId'] + ' - templateName: ' + loadedSettings[i]['templateName']);
+    // console.log("Menu - " + 'path: ' + loadedSettings[i]['path'] + ' - serverId: ' + loadedSettings[i]['serverId'] + ' - apiKey: ' + loadedSettings[i]['apiKey'] + ' - templateId: ' + loadedSettings[i]['templateId'] + ' - templateName: ' + loadedSettings[i]['templateName']);
   }
 
   function addTrayMenu(loadedSettings) {
@@ -81,7 +88,8 @@ NATIVE UI - TRAY, MENU
       label: 'Watch a folder...',
       click: function(){
         console.log("I'm clicked");
-        win.open('source/index.html');
+        // open a new window with the "Watch new folder" page.
+        win.window.location.href = 'add.html';
         win.show();
         win.focus();
       }
@@ -102,18 +110,18 @@ NATIVE UI - TRAY, MENU
       label: 'Quit',
       click: function(){
         console.log("Bye!");
+
+        // hide window and remove tray, so we fake a fast exit
         win.hide();
+        tray.remove();
+        tray = null;
+
         // here, code to unwatch folders
-        // TODO
+        watch.stop();
 
         // Quit current app
         gui.App.quit();
       }
     }));
-
-
-    // Remove the tray
-    // tray.remove();
-    // tray = null;
 
   }
