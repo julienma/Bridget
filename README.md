@@ -36,7 +36,7 @@ Make sure the _package.command script is executable
 chmod u+x _package.command
 ```
 
-Make sure your package.json reference your entry point file, e.g:
+Make sure your package.json references your entry point file, e.g:
 ```
 {
   "main": "source/index.html"
