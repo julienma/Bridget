@@ -1,3 +1,5 @@
+// TODO: add help screen (where and how to reset settings.json), and submit bugs to GH
+
 
 // require local Settings package (nconf)
 var settings = require('./server/settings.js');

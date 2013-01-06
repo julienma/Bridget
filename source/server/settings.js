@@ -20,7 +20,7 @@ function read (callback){
         i++;
         loadedSettings.push({});
         loadedSettings[i]['path'] = key;
-        console.log('key: ' + key + '\n' + 'value: ' + conf[key]);
+        // console.log('key: ' + key + '\n' + 'value: ' + conf[key]);
         for(var key2 in conf[key]) {
           loadedSettings[i]['serverId'] = key2;
           for(var key3 in conf[key][key2]) {
@@ -29,8 +29,8 @@ function read (callback){
             loadedSettings[i]['templateName'] = conf[key][key2][key3]['name'];
           }
         }
-        console.log('- ' + i + ' -------------------');
-        console.log('path: ' + loadedSettings[i]['path'] + ' - serverId: ' + loadedSettings[i]['serverId'] + ' - apiKey: ' + loadedSettings[i]['apiKey'] + ' - templateId: ' + loadedSettings[i]['templateId'] + ' - templateName: ' + loadedSettings[i]['templateName']);
+        // console.log('- ' + i + ' -------------------');
+        // console.log('path: ' + loadedSettings[i]['path'] + ' - serverId: ' + loadedSettings[i]['serverId'] + ' - apiKey: ' + loadedSettings[i]['apiKey'] + ' - templateId: ' + loadedSettings[i]['templateId'] + ' - templateName: ' + loadedSettings[i]['templateName']);
       }
 
       callback(undefined, loadedSettings);
