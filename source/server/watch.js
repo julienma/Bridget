@@ -1,10 +1,12 @@
-// Require
+// Require Watchr
 var watchr = require('watchr');
+// require local Upload package
+var template = require('./template.js');
 
 // make watcher globally available (dirty trick)
 var watchJob;
 
-function start (pathsToWatch) {
+function start (pathsToWatch, loadedSettings, apiServer) {
     // Watch a directory or file
     console.log("Start watching for paths: " + pathsToWatch);
     watchr.watch({
@@ -15,17 +17,20 @@ function start (pathsToWatch) {
             },
             change: function(changeType,filePath,fileCurrentStat,filePreviousStat){
                 console.log('a change event occured - Type: ' + changeType + ' - Path: ' + filePath);
-                // TODO: upload changes
+                // do nothing if the changed file is the generated zipfile OR if there's a lock (set by previous upload)
+                if ((filePath.indexOf(global.zipfile) !=-1) || template.isLocked()) {
+                    console.log('WATCHR: Locked / Ignoring ZIPFILE' + global.zipfile);
+                } else {
+                    template.upload(filePath, loadedSettings, apiServer);
+                    console.log('WATCHR: Upload template!');
+                }
             }
         },
         next: function(err,watchers){
             console.log('watching for all our paths has completed', arguments); // arguments = array with all settings
-            for ( i=0; i<watchers.length; i++ ) {
-                //watchers[i].close();
-                console.log("WATCHER: " + watchers[i].path);
-            }
             watchJob = watchers;
         },
+        // TODO: wait for watchr fix? https://github.com/bevry/watchr/issues/28
         ignoreHiddenFiles: true, // ignore files which filename starts with a .
         ignoreCommonPatterns: true, // ignore common undesirable file patterns (e.g. .svn, .git, .DS_Store, thumbs.db, etc)
         persistent: true
