@@ -177,14 +177,21 @@ $(document).ready(function(){
   Save settings (server, templates, path, etc.) in a json file, through nconf
 */
   function saveSettings () {
-    settings.save(templateSettings, function (err, file){
+    // require local Settings package (nconf)
+    require('./server/settings.js').save(templateSettings, function (err, file){
       if (err) {
         console.error(err);
         displayAlert('#step2 #alert', 'Error: ' + err, 'error');
         return;
+      } else {
+        // close window after 5s
+        setTimeout(function() {
+          require('nw.gui').Window.get().close();
+        }, 2*1000);
+        // TODO: restart 'init' (add to tray and start watching)
+        console.log("RELOAD");
+
       }
-      console.log('Configuration saved successfully in ' + file);
-      //displayAlert('#step2 #alert', 'Configuration saved successfully in ' + file, 'success');
     });
     $('#save-settings').attr('disabled', 'disabled');
     $('#save-settings').addClass('btn-success');
