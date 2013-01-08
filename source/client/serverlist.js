@@ -1,3 +1,4 @@
+
 // TODO: see if there's any need to auth. If so, make sure to externalize this in a json (loaded through nconf), and .gitignore it
 var authLogin = '';
 var authPwd = '';
@@ -28,13 +29,38 @@ var apiServer = [
 
 /*
 Find details (url, name) about a server, given its id ('c', 'q', etc.)
-Usage: console.log(getServerDetails('c')[0].url);
-SIMILAR to NJSgetServerDetails() in server/template.js, but needs jQuery (and wouldn't work as is within NodeJS)
+Usage: console.log(getServerDetails('c').url); (or .name/.id)
 */
+
 function getServerDetails(id){
-  return $.grep(apiServer, function(item){
-    if (item.id == id) {
-      return item;
-    }
-  });
+  for(var i = 0; i<apiServer.length; i++){
+      var item = apiServer[i];
+      if(item.id === id) {
+        console.log("FOUND: " + item);
+        return item;
+      }
+  }
+  return false;
+}
+
+
+/*
+Make this code usable in both node and the browser, by exporting only if in node ('exports' does not exist in browser)
+
+# Usage:
+## In Node
+var apiServer = require('serverlist.js').apiServer;
+
+## In Browser
+<script src="serverlist.js"></script>
+<script>
+    alert(apiServer);
+    getServerDetails(id);
+</script>
+
+*/
+
+if (typeof exports !== 'undefined') {
+  exports.apiServer = apiServer;
+  exports.getServerDetails = getServerDetails;
 }
