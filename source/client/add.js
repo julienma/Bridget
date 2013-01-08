@@ -186,7 +186,7 @@ $(document).ready(function(){
       } else {
         // close window after 5s
         setTimeout(function() {
-          require('nw.gui').Window.get().close();
+          window.require('nw.gui').Window.get().close();
         }, 2*1000);
         // TODO: restart 'init' (add to tray and start watching)
         console.log("RELOAD");
