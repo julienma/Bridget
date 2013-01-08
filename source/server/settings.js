@@ -14,8 +14,6 @@ function read (callback){
 
     var conf = nconf.get();
     if (conf){
-      // TODO - loop through all the values, and start watchr + create new tray menu (for deletion) for each
-
       for(var key in conf) {
         i++;
         loadedSettings.push({});
