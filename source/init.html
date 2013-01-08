@@ -36,32 +36,7 @@
 
     <script type="text/javascript">
     window.onload = function() {
-
-      // set the settings file to use
-      // var settingsPath = process.env['HOME'];
-      // TODO: change that after debug
-      var settingsPath = '/Users/julien/Dropbox/dev/NodeJS/Bridget';
-      settings.file(settingsPath + '/_bridget_settings.json');
-
-      settings.read(function (err, loadedSettings){
-        if (err) {
-          console.error(err);
-          return;
-        }
-        // if settings were correctly loaded
-        console.log('Configuration loaded successfully: ' + loadedSettings);
-        // create tray menu
-        addTrayMenu(loadedSettings);
-        // get every paths loaded
-        var pathsToWatch = new Array();
-        for (var i=0; i<loadedSettings.length-1; i++) {
-          pathsToWatch.push(loadedSettings[i]['path']);
-        }
-        // and watch them
-        watch.start(pathsToWatch);
-
-      });
-
+      init();
     }
     </script>
 
