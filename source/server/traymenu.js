@@ -13,12 +13,31 @@ var menu = new gui.Menu();
 var win = gui.Window.get(
   window.open('add.html')
 );
+// Hold the number of tray menu items after initial creation, so we can use it to remove additional watched folder items
+var trayItemsAtCreation;
+// position in the tray menu at which to insert new items for watched folders (here, after the 1st item 'watch a folder')
+var trayPositionForWatchedFolders = 1;
+
+// TODO: reset watchedFolders in tray menu, so we can populate them again after reloading settings
+function removeWatchedFolders() {
+  // DEBUG
+  console.log("# TRAY ITEMS: " + menu.items.length);
+  for (var key in menu.items) {
+      console.log('- ' + key + ' => ' + menu.items[key].label + ' (' + menu.items[key].type + ')');
+  }
+
+  // let's remove all items added after initial creation (namely, watched folders). They will keep the same position be in position 1, as removing an item makes the next one moves in its position 1), but the 2 last items (separator + 'quit')
+  while(menu.items.length > trayItemsAtCreation) {
+    console.log("TRAY: remove item " + menu.items.length + '>' + trayItemsAtCreation);
+    menu.removeAt(trayPositionForWatchedFolders);
+  }
+}
 
 function addWatchedFolder(loadedSettings, position){
 
   // add a separator as first item if this is the 1st watched folder
   if (position === 0) {
-    menu.insert(new gui.MenuItem({type:"separator"}), 1);
+    menu.insert(new gui.MenuItem({type:"separator"}), trayPositionForWatchedFolders);
   }
 
   // Add actions submenu
@@ -69,13 +88,13 @@ function addWatchedFolder(loadedSettings, position){
     submenu: submenu
     // TODO: display a color icon for server, instead of incomprehensible letter
   });
-  menu.insert(item, position + 2);
+  // add the new tray menu item, after separator (+1)
+  menu.insert(item, trayPositionForWatchedFolders + position + 1);
 
   // console.log("Menu - " + 'path: ' + loadedSettings[position]['path'] + ' - serverId: ' + loadedSettings[position]['serverId'] + ' - apiKey: ' + loadedSettings[position]['apiKey'] + ' - templateId: ' + loadedSettings[position]['templateId'] + ' - templateName: ' + loadedSettings[position]['templateName']);
 }
 
 function create() {
-
   // Create a tray icon
   var tray = new gui.Tray({
     //title: 'Bridget',
@@ -122,7 +141,11 @@ function create() {
     }
   }));
 
+// number of items in tray initial state
+trayItemsAtCreation = menu.items.length;
+
 }
 
 exports.addWatchedFolder = addWatchedFolder;
+exports.removeWatchedFolders = removeWatchedFolders;
 exports.create = create;

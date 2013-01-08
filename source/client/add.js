@@ -178,18 +178,24 @@ $(document).ready(function(){
 */
   function saveSettings () {
     // require local Settings package (nconf)
-    require('./server/settings.js').save(templateSettings, function (err, file){
+    var settings = require('./server/settings.js');
+    settings.save(templateSettings, function (err, file){
       if (err) {
         console.error(err);
         displayAlert('#step2 #alert', 'Error: ' + err, 'error');
         return;
       } else {
+        console.log('SETTINGS saved. Adding new tray menu + start watching new folder.');
         // close window after 5s
         setTimeout(function() {
           window.require('nw.gui').Window.get().close();
         }, 2*1000);
-        // TODO: restart 'init' (add to tray and start watching)
-        console.log("RELOAD");
+        // reset the watched folders from tray menu, so we can reload them again
+        require('./server/traymenu.js').removeWatchedFolders();
+        // reload settings.json, populate tray and start watchr. This will include any new watched folder.
+        settings.loadAndWatchFolders();
+
+        console.log("TRAY Reload");
 
       }
     });

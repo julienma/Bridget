@@ -36,7 +36,6 @@ function getServerDetails(id){
   for(var i = 0; i<apiServer.length; i++){
       var item = apiServer[i];
       if(item.id === id) {
-        console.log("FOUND: " + item);
         return item;
       }
   }
