@@ -8,8 +8,8 @@ Watch local template folder for changes, and auto-upload template to an associat
 
 ### Node & node-webkit
 
-- [Node.js](http://nodejs.org/) (at least v0.8.16): recommanded installation through [NVM](https://github.com/creationix/nvm)
-- [node-webkit](https://github.com/rogerwang/node-webkit): download [prebuilt binary](https://github.com/rogerwang/node-webkit#downloads), and drop it in your Applications folder (OSX)
+- [Node.js](http://nodejs.org/) (> 0.8.16): recommanded installation through [NVM](https://github.com/creationix/nvm)
+- [node-webkit](https://github.com/rogerwang/node-webkit) (> 0.3.6): download [prebuilt binary](https://github.com/rogerwang/node-webkit#downloads), and drop it in your Applications folder (OSX)
 
 ### Node modules
 
@@ -28,7 +28,7 @@ npm install watchr
 npm install nconf
 ```
 
-## Build
+## Build (OSX 10.7.5)
 
 Make sure the _package.command script is executable
 

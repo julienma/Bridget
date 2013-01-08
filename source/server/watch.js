@@ -30,7 +30,6 @@ function start (pathsToWatch, loadedSettings) {
             console.log('watching for all our paths has completed', arguments); // arguments = array with all settings
             watchJob = watchers;
         },
-        // TODO: wait for watchr fix? https://github.com/bevry/watchr/issues/28
         ignoreHiddenFiles: true, // ignore files which filename starts with a .
         ignoreCommonPatterns: true, // ignore common undesirable file patterns (e.g. .svn, .git, .DS_Store, thumbs.db, etc)
         persistent: true
