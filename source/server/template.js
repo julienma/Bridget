@@ -1,5 +1,8 @@
 var spawn = require('child_process').spawn;
 
+// require common serverlist (both server & browser)
+var serverlist = require('../client/serverlist.js');
+
 // a lock is used to create an interval between multiple file changes / uploads
 var locked = 0;
 
@@ -20,22 +23,7 @@ function isLocked () {
   return locked;
 }
 
-/*
-Find details (url, name) about a server, given its id ('c', 'q', etc.)
-Usage: console.log(getServerDetails('c').url);
-SIMILAR to getServerDetails() in client/server-list.js, but adapted for nodeJS server-side, without needing jQuery
-*/
-function NJSgetServerDetails(id, apiServer){
-  for(var i = 0; i<apiServer.length; i++){
-      var item = apiServer[i];
-      if(item.id === id) {
-        return item;
-      }
-  }
-  return false;
-}
-
-function upload (filePath, loadedSettings, apiServer) {
+function upload (filePath, loadedSettings) {
   // set a lock so we avoid uploading more than once
   lock();
 
@@ -46,7 +34,7 @@ function upload (filePath, loadedSettings, apiServer) {
     if (filePath.indexOf(loadedSettings[i]['path']) !=-1) {
       var templateDir = loadedSettings[i]['path'];
       // construct the "template upload" API Url
-      var uploadUrl = NJSgetServerDetails(loadedSettings[i]['serverId'], apiServer).url + '/templates/' + loadedSettings[i]['templateId'] + '.json?oauth_token=' + loadedSettings[i]['apiKey'];
+      var uploadUrl = serverlist.getServerDetails(loadedSettings[i]['serverId'], serverlist.apiServer).url + '/templates/' + loadedSettings[i]['templateId'] + '.json?oauth_token=' + loadedSettings[i]['apiKey'];
       console.log('FOUND path for template ' + loadedSettings[i]['templateName'] + ': ' + uploadUrl);
       // and upload
       zipAndUpload(templateDir, uploadUrl);

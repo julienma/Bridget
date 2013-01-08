@@ -4,9 +4,9 @@ var watchr = require('watchr');
 var template = require('./template.js');
 
 // make watcher globally available (dirty trick)
-var watchJob;
+var watchJob = {};
 
-function start (pathsToWatch, loadedSettings, apiServer) {
+function start (pathsToWatch, loadedSettings) {
     // Watch a directory or file
     console.log("Start watching for paths: " + pathsToWatch);
     watchr.watch({
@@ -21,7 +21,7 @@ function start (pathsToWatch, loadedSettings, apiServer) {
                 if ((filePath.indexOf(global.zipfile) !=-1) || template.isLocked()) {
                     console.log('WATCHR: Locked / Ignoring ZIPFILE' + global.zipfile);
                 } else {
-                    template.upload(filePath, loadedSettings, apiServer);
+                    template.upload(filePath, loadedSettings);
                     console.log('WATCHR: Upload template!');
                 }
             }

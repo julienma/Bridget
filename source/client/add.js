@@ -126,7 +126,7 @@ $(document).ready(function(){
   function selectTemplate () {
     var templateId = $('#templateList').val();
     var templateName = $('#templateList option:selected').text();
-    displayAlert('#step1 #alert', 'Using <strong>'+templateName+'</strong> on <strong>' + getServerDetails(templateSettings.serverId)[0].name + '</strong>', 'success');
+    displayAlert('#step1 #alert', 'Using <strong>'+templateName+'</strong> on <strong>' + getServerDetails(templateSettings.serverId).name + '</strong>', 'success');
     //$('#save-settings').focus();
 
     // save the template settings
