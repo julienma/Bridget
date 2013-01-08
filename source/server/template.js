@@ -8,8 +8,9 @@ var locked = 0;
 
 // lock after upload, so no more than 1 upload at a time is done
 function lock() {
-  locked = 1;
+  // TODO: animate tray icon on lock / upload
   console.log('LOCKED');
+  locked = 1;
 }
 
 // unlock after curl is finished

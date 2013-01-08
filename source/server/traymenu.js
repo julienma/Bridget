@@ -18,7 +18,7 @@ var trayItemsAtCreation;
 // position in the tray menu at which to insert new items for watched folders (here, after the 1st item 'watch a folder')
 var trayPositionForWatchedFolders = 1;
 
-// TODO: reset watchedFolders in tray menu, so we can populate them again after reloading settings
+// reset watchedFolders in tray menu, so we can populate them again after reloading settings
 function removeWatchedFolders() {
   // DEBUG
   console.log("# TRAY ITEMS: " + menu.items.length);
@@ -49,11 +49,6 @@ function addWatchedFolder(loadedSettings, position){
     click: function() {
       // TODO: start once the upload script
       console.log(this.label);
-
-      // TEST DEBUG
-      win.window.location.href = 'test-nodejs.html';
-      win.show();
-      win.focus();
     }
   }));
 */
