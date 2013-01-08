@@ -1,4 +1,8 @@
 var nconf = require('nconf');
+// require local Watch package (watchr)
+var watch = require('./watch.js');
+// require local Tray package (node-webkit's tray)
+var trayMenu = require('./traymenu.js');
 
 var currentSettingsFile;
 
@@ -50,7 +54,6 @@ settings.save(templateSettings, function (err, file){
 });
 */
 function save (templateSettings, callback){
-
   // check if all the settings are set
   for (var name in templateSettings) {
     console.log(name + ": " + templateSettings[name]);
@@ -81,6 +84,34 @@ function save (templateSettings, callback){
   });
 }
 
+// Helper function. Will read settings.json, populate tray and start watchr
+function loadAndWatchFolders() {
+  read(function (err, loadedSettings){
+    if (err) {
+      console.error(err);
+      return;
+    }
+    // if settings were correctly loaded
+    console.log('Configuration loaded successfully: ' + loadedSettings);
+    var pathsToWatch = [];
+    // if there's any watched folder loaded from the settings
+    if (loadedSettings.length>1) {
+      // for each watched folder
+      for (var i=0; i<loadedSettings.length-1; i++) {
+        // add one tray menu entry
+        trayMenu.addWatchedFolder(loadedSettings, i);
+        // get every paths loaded
+        pathsToWatch.push(loadedSettings[i]['path']);
+      }
+    }
+    // make sure we reset watched folders (if any)
+    watch.stop();
+    // and watch paths
+    watch.start(pathsToWatch, loadedSettings);
+  });
+}
+
 exports.file = file;
 exports.read = read;
 exports.save = save;
+exports.loadAndWatchFolders = loadAndWatchFolders;
