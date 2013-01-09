@@ -47,6 +47,15 @@ Then run it, it will package an _app.nw and launch it through node-webkit.
 
 ## Usage
 
-Here usage instructions
+### Settings file
+
+Your watched folders are saved in a hidden `.bridget_settings.json` JSON file in your $HOME directory.
+It is created the first time you add a watched folder.
+You can back it up if needed.
+
+Note that it should never be empty, otherwise app won't load.
+If you want to reset your watched directory, do not empty and save the file, just delete it.
+
+### Here usage instructions
 
 > Usage
