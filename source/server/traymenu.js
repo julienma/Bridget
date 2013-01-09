@@ -45,15 +45,6 @@ function addWatchedFolder(loadedSettings, position){
   // Add actions submenu
   var submenu = new gui.Menu();
 
-  // TODO later
-/*    submenu.append(new gui.MenuItem({
-    label: 'Force upload to server',
-    click: function() {
-      // TODO: start once the upload script
-      console.log(this.label);
-    }
-  }));
-*/
   submenu.append(new gui.MenuItem({
     label: 'Open in Finder...',
     click: function() {
@@ -61,7 +52,15 @@ function addWatchedFolder(loadedSettings, position){
     }
   }));
 
-  // TODO: remove from watchr and delete from nconf
+  // start once the upload script
+  submenu.append(new gui.MenuItem({
+    label: 'Force upload to server',
+    click: function() {
+      require('./template.js').upload(loadedSettings[position].path, loadedSettings);
+    }
+  }));
+
+  // unwatch folder (delete from settings and reload)
   submenu.append(new gui.MenuItem({type:"separator"}));
   submenu.append(new gui.MenuItem({
     label: 'Unwatch & Remove',
