@@ -108,7 +108,6 @@ function create() {
   menu.append(new gui.MenuItem({
     label: 'Watch a folder...',
     click: function(){
-      console.log("I'm clicked");
       // open a new window with the "Watch new folder" page.
       win.window.location.href = 'add.html';
       win.show();
@@ -118,6 +117,14 @@ function create() {
 
   // add quit button
   menu.append(new gui.MenuItem({type:"separator"}));
+  menu.append(new gui.MenuItem({
+    label: 'Submit a bug...',
+    click: function(){
+      // Open URL with default browser.
+      gui.Shell.openExternal('https://github.com/julienma/Bridget/issues');
+    }
+  }));
+
   menu.append(new gui.MenuItem({
     label: 'Quit',
     click: function(){
