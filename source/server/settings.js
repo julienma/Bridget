@@ -65,22 +65,39 @@ function save (templateSettings, callback){
 
   // clear the current entry to make sure there is only 1 server for each watched path
   // this will have to be removed and worked around if we want to manage multiple servers (c, q, s, etc.) for each path
-  nconf.clear(templateSettings.path);
+  nconf.clear(templateSettings.path, function(){
+    // set the settings for the current path
+    nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':apikey', templateSettings.apiKey);
+    nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':template:id', templateSettings.templateId);
+    nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':template:name', templateSettings.templateName);
 
-  // set the settings for the current path
-  nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':apikey', templateSettings.apiKey);
-  nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':template:id', templateSettings.templateId);
-  nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':template:name', templateSettings.templateName);
+    nconf.save(function (err){
+      if (err) {
+        console.error(err.message);
+        callback(err.message);
+        return;
+      } else {
+        console.log('Configuration saved successfully in ' + currentSettingsFile);
+        callback(undefined, currentSettingsFile);
+      }
+    });
+  });
+}
 
-  nconf.save(function (err){
-    if (err) {
-      console.error(err.message);
-      callback(err.message);
-      //callback(err.message, 'Error: ' + err.message, 'error');
-      return;
-    }
-    console.log('Configuration saved successfully in ' + currentSettingsFile);
-    callback(undefined, currentSettingsFile);
+// removes the specified key (and below tree) from settings.json
+function clear (key, callback) {
+  console.log("SETTINGS clear: " + key);
+  nconf.clear(key, function () {
+    nconf.save(function (err){
+      if (err) {
+        console.error(err.message);
+        callback(err.message);
+        return;
+      } else {
+        console.log('Configuration saved successfully in ' + currentSettingsFile);
+        callback(undefined);
+      }
+    });
   });
 }
 
@@ -114,4 +131,5 @@ function loadAndWatchFolders() {
 exports.file = file;
 exports.read = read;
 exports.save = save;
+exports.clear = clear;
 exports.loadAndWatchFolders = loadAndWatchFolders;

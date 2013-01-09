@@ -194,9 +194,6 @@ $(document).ready(function(){
         require('./server/traymenu.js').removeWatchedFolders();
         // reload settings.json, populate tray and start watchr. This will include any new watched folder.
         settings.loadAndWatchFolders();
-
-        console.log("TRAY Reload");
-
       }
     });
     $('#save-settings').attr('disabled', 'disabled');

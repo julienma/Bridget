@@ -4,6 +4,8 @@ NATIVE UI - TRAY, MENU
 
 // require local Watch package (watchr)
 var watch = require('./watch.js');
+// require local Settings package (nconf)
+var settings = require('./settings.js');
 
 // Load native UI library
 var gui = window.require('nw.gui');
@@ -59,21 +61,26 @@ function addWatchedFolder(loadedSettings, position){
     }
   }));
 
-  // TODO later
-/*    submenu.append(new gui.MenuItem({type:"separator"}));
+  // TODO: remove from watchr and delete from nconf
+  submenu.append(new gui.MenuItem({type:"separator"}));
   submenu.append(new gui.MenuItem({
-    label: 'Unwatch & Delete',
+    label: 'Unwatch & Remove',
     click: function() {
-      // TODO: remove from watchr and delete from nconf
-      console.log(this.label);
-      var doDelete = confirm('Do you want to delete this watched folder?');
-      // if confirmed
-      if (doDelete){
-        alert('deleting ' + loadedSettings[position]['templateName']);
+      // confirm?
+      var doRemove = window.confirm('Are your sure you want to remove this watched folder?\n' + loadedSettings[position].path);
+      // if confirmed, clear 'path' key from settings, and reload everything
+      if (doRemove){
+        settings.clear(loadedSettings[position].path, function (err){
+          console.log('UNWATCH OK');
+          // reset the watched folders from tray menu, so we can reload them again
+          removeWatchedFolders();
+          // reload settings.json, populate tray and start watchr. This will include any new watched folder.
+          settings.loadAndWatchFolders();
+        });
       }
     }
   }));
-*/
+
   // get the last folder from the path
   var folder = '/' + loadedSettings[position].path.split('/').splice(-1,1);
 
