@@ -13,7 +13,8 @@ function start (pathsToWatch, loadedSettings) {
         paths: pathsToWatch,
         listeners: {
             error: function(err){
-                console.log('an error occured:', err);
+                console.log('WATCHR Failed: ', err);
+                alert('WATCHR Failed: ' + err);
             },
             change: function(changeType,filePath,fileCurrentStat,filePreviousStat){
                 console.log('a change event occured - Type: ' + changeType + ' - Path: ' + filePath);
