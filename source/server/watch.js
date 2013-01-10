@@ -16,7 +16,7 @@ function start (pathsToWatch, loadedSettings) {
             error: function(err){
                 console.log('WATCHR Failed: ', err);
                 alert('WATCHR Failed: ' + err);
-                growl('I failed to start watching folders. Please quit and start me again.', { title: 'Bridget', image: 'source/img/tray-icon.png' });
+                growl('I failed to start watching folders. Please quit and start me again.', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
             },
             change: function(changeType,filePath,fileCurrentStat,filePreviousStat){
                 console.log('a change event occured - Type: ' + changeType + ' - Path: ' + filePath);

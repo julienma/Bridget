@@ -65,7 +65,7 @@ function zipAndUpload(templateDir, uploadUrl, templateName) {
         if(code !== 0) {
             console.log('ZIP Failed: ' + code);
             alert('ZIP Failed: ' + code);
-            growl('ZIP creation failed!', { title: 'Bridget', image: 'source/img/tray-icon.png' });
+            growl('ZIP creation failed!', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
         } else {
             console.log('ZIP OK');
             // start upload
@@ -98,7 +98,7 @@ function uploadWithCurl(templateDir, uploadUrl, templateName) {
         } else {
           console.log('UPLOAD Failed (could be 401, 301, etc.)');
           alert('UPLOAD Failed (could be 401, 301, etc.)');
-          growl('UPLOAD failed (could be 401, 301, etc.)', { title: 'Bridget', image: 'source/img/tray-icon.png' });
+          growl('UPLOAD failed (could be 401, 301, etc.)', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
         }
 
     });
@@ -107,7 +107,7 @@ function uploadWithCurl(templateDir, uploadUrl, templateName) {
         if (code !== 0) {
             console.log('CURL Failed: ' + code);
             alert('CURL Failed: ' + code);
-            growl('CURL process failed!', { title: 'Bridget', image: 'source/img/tray-icon.png' });
+            growl('CURL process failed!', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
         } else console.log('CURL OK');
         // remove lock so we can upload once again
         unlock();
