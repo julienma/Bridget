@@ -59,3 +59,7 @@ If you want to reset your watched directory, do not empty and save the file, jus
 ### Here usage instructions
 
 > Usage
+
+## Licence
+
+Tray icon using Entypo pictograms by Daniel Bruce — www.entypo.com

@@ -2,21 +2,24 @@ var spawn = require('child_process').spawn;
 
 // require common serverlist (both server & browser)
 var serverlist = require('../client/serverlist.js');
+// require local Tray package (node-webkit's tray)
+var trayMenu = require('./traymenu.js');
 
 // a lock is used to create an interval between multiple file changes / uploads
 var locked = 0;
 
 // lock after upload, so no more than 1 upload at a time is done
 function lock() {
-  // TODO: animate tray icon on lock / upload
   console.log('LOCKED');
   locked = 1;
+  trayMenu.activateTrayIcon(true);
 }
 
 // unlock after curl is finished
 function unlock() {
-  locked = 0;
   console.log('UNLOCKED');
+  locked = 0;
+  trayMenu.activateTrayIcon(false);
 }
 
 function isLocked () {

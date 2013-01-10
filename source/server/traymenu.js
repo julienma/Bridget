@@ -15,10 +15,17 @@ var menu = new gui.Menu();
 var win = gui.Window.get(
   window.open('add.html')
 );
+// will be the tray object
+var tray;
 // Hold the number of tray menu items after initial creation, so we can use it to remove additional watched folder items
 var trayItemsAtCreation;
 // position in the tray menu at which to insert new items for watched folders (here, after the 1st item 'watch a folder')
 var trayPositionForWatchedFolders = 1;
+
+// switch tray icon depending on bool isActive
+function activateTrayIcon (isActive) {
+  tray.icon = 'source/img/tray-icon' + ((isActive)?'-active':'') + '.png';
+}
 
 // reset watchedFolders in tray menu, so we can populate them again after reloading settings
 function removeWatchedFolders() {
@@ -36,7 +43,6 @@ function removeWatchedFolders() {
 }
 
 function addWatchedFolder(loadedSettings, position){
-
   // add a separator as first item if this is the 1st watched folder
   if (position === 0) {
     menu.insert(new gui.MenuItem({type:"separator"}), trayPositionForWatchedFolders);
@@ -84,10 +90,10 @@ function addWatchedFolder(loadedSettings, position){
   var folder = '/' + loadedSettings[position].path.split('/').splice(-1,1);
 
   var item = new gui.MenuItem({
-    label: folder + ' -> ' + loadedSettings[position].templateName + ' - ' + loadedSettings[position].serverId,
+    label: folder + '  >  ' + loadedSettings[position].templateName,
     tooltip: loadedSettings[position].path,
+    icon: 'source/img/server-icon-' + loadedSettings[position].serverId + '.png',
     submenu: submenu
-    // TODO: display a color icon for server, instead of incomprehensible letter
   });
   // add the new tray menu item, after separator (+1)
   menu.insert(item, trayPositionForWatchedFolders + position + 1);
@@ -96,10 +102,11 @@ function addWatchedFolder(loadedSettings, position){
 }
 
 function create() {
-  // Create a tray icon
-  var tray = new gui.Tray({
+  // Create a tray icon - 18x18 px PNG w/ alpha
+  tray = new gui.Tray({
     //title: 'Bridget',
     icon: 'source/img/tray-icon.png'
+    // tray icon source: Daniel Bruce (www.entypo.com)
   });
 
   // catch window's closing, so we can actually keep the app running in the tray
@@ -154,6 +161,7 @@ trayItemsAtCreation = menu.items.length;
 
 }
 
+exports.activateTrayIcon = activateTrayIcon;
 exports.addWatchedFolder = addWatchedFolder;
 exports.removeWatchedFolders = removeWatchedFolders;
 exports.create = create;
