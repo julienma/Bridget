@@ -2,9 +2,11 @@
 INIT
 */
 
-// TODO: add help screen (where and how to reset settings.json), and submit bugs to GH
-// TODO: display important messages / errors in alert() instead of message.log(), so it is known to the user
-// TODO: replace tray icon, package as standalone, hide dock icon
+// TODO: package as standalone, hide dock icon
+// https://github.com/rogerwang/node-webkit/wiki/How-to-package-and-distribute-your-apps
+// http://cocoadevcentral.com/articles/000071.php
+
+// TODO: nice mkg page? Ex. http://apps.shopify.com/desktop-theme-editor
 
 /*
 Create tray menu

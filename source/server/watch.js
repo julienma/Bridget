@@ -1,5 +1,6 @@
 // Require Watchr
 var watchr = require('watchr');
+var growl = require('growl');
 // require local Upload package
 var template = require('./template.js');
 
@@ -15,6 +16,7 @@ function start (pathsToWatch, loadedSettings) {
             error: function(err){
                 console.log('WATCHR Failed: ', err);
                 alert('WATCHR Failed: ' + err);
+                growl('I failed to start watching folders. Please quit and start me again.', { title: 'Bridget', image: 'source/img/tray-icon.png' });
             },
             change: function(changeType,filePath,fileCurrentStat,filePreviousStat){
                 console.log('a change event occured - Type: ' + changeType + ' - Path: ' + filePath);
@@ -29,6 +31,7 @@ function start (pathsToWatch, loadedSettings) {
         },
         next: function(err,watchers){
             console.log('watching for all our paths has completed', arguments); // arguments = array with all settings
+            growl('I\'m now watching your folders. Rock on!', { title: 'Bridget', image: 'source/img/tray-icon.png' });
             watchJob = watchers;
         },
         ignoreHiddenFiles: true, // ignore files which filename starts with a .

@@ -28,6 +28,12 @@ npm install watchr
 npm install nconf
 ```
 
+- [node-growl](https://github.com/visionmedia/node-growl): Growl support for Nodejs. Needs [growlnotify(1)](http://growl.info/extras.php#growlnotify).
+
+```
+npm install growl
+```
+
 ## Build (OSX 10.7.5)
 
 Make sure the _package.command script is executable
@@ -57,6 +63,14 @@ Note that it should never be empty, otherwise app won't load.
 If you want to reset your watched directory, do not empty and save the file, just delete it.
 
 ### Here usage instructions
+=======
+### Installation
+
+TODO
+
+### Growl notifications (optional)
+You should install [growlnotify(1)](http://growl.info/extras.php#growlnotify) if you want to get Growl notifications when uploads are done.
+>>>>>>> Added growl notifications (with growl module)
 
 > Usage
 

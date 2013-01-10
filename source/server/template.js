@@ -1,4 +1,5 @@
 var spawn = require('child_process').spawn;
+var growl = require('growl');
 
 // require common serverlist (both server & browser)
 var serverlist = require('../client/serverlist.js');
@@ -37,16 +38,17 @@ function upload (filePath, loadedSettings) {
   for (var i=0; i<loadedSettings.length-1; i++) {
     if (filePath.indexOf(loadedSettings[i]['path']) !=-1) {
       var templateDir = loadedSettings[i]['path'];
+      var templateName = loadedSettings[i]['templateName'];
       // construct the "template upload" API Url
       var uploadUrl = serverlist.getServerDetails(loadedSettings[i]['serverId'], serverlist.apiServer).url + '/templates/' + loadedSettings[i]['templateId'] + '.json?oauth_token=' + loadedSettings[i]['apiKey'];
       console.log('FOUND path for template ' + loadedSettings[i]['templateName'] + ': ' + uploadUrl);
       // and upload
-      zipAndUpload(templateDir, uploadUrl);
+      zipAndUpload(templateDir, uploadUrl, templateName);
     }
   }
 }
 
-function zipAndUpload(templateDir, uploadUrl) {
+function zipAndUpload(templateDir, uploadUrl, templateName) {
     // Options -r recursive
     var zip = spawn('zip', ['-r', global.zipfile, '.'], {
         cwd: templateDir,
@@ -63,16 +65,17 @@ function zipAndUpload(templateDir, uploadUrl) {
         if(code !== 0) {
             console.log('ZIP Failed: ' + code);
             alert('ZIP Failed: ' + code);
+            growl('ZIP creation failed!', { title: 'Bridget', image: 'source/img/tray-icon.png' });
         } else {
             console.log('ZIP OK');
             // start upload
-            uploadWithCurl(templateDir, uploadUrl);
+            uploadWithCurl(templateDir, uploadUrl, templateName);
         }
     });
 
 }
 
-function uploadWithCurl(templateDir, uploadUrl) {
+function uploadWithCurl(templateDir, uploadUrl, templateName) {
     // execute curl using child_process' spawn function
     var curl = spawn('curl', ['-i', '-F', 'template=@' + zipfile, '-F', '_method=PUT', uploadUrl], {
         cwd: templateDir,
@@ -91,9 +94,11 @@ function uploadWithCurl(templateDir, uploadUrl) {
         // try to find the success string (otherwise it could be a 401, 301, etc.)
         if (log.lastIndexOf(successString) !=-1) {
             console.log('UPLOAD DONE');
+            growl('Upload successfull on ' + templateName + '! (Source: ' + templateDir + ')', { title: 'Bridget', image: 'source/img/tray-icon.png' });
         } else {
           console.log('UPLOAD Failed (could be 401, 301, etc.)');
           alert('UPLOAD Failed (could be 401, 301, etc.)');
+          growl('UPLOAD failed (could be 401, 301, etc.)', { title: 'Bridget', image: 'source/img/tray-icon.png' });
         }
 
     });
@@ -102,6 +107,7 @@ function uploadWithCurl(templateDir, uploadUrl) {
         if (code !== 0) {
             console.log('CURL Failed: ' + code);
             alert('CURL Failed: ' + code);
+            growl('CURL process failed!', { title: 'Bridget', image: 'source/img/tray-icon.png' });
         } else console.log('CURL OK');
         // remove lock so we can upload once again
         unlock();
