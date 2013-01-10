@@ -62,17 +62,13 @@ You can back it up if needed.
 Note that it should never be empty, otherwise app won't load.
 If you want to reset your watched directory, do not empty and save the file, just delete it.
 
-### Here usage instructions
-=======
 ### Installation
 
 TODO
 
 ### Growl notifications (optional)
-You should install [growlnotify(1)](http://growl.info/extras.php#growlnotify) if you want to get Growl notifications when uploads are done.
->>>>>>> Added growl notifications (with growl module)
 
-> Usage
+You should install [growlnotify(1)](http://growl.info/extras.php#growlnotify) if you want to get Growl notifications when uploads are done.
 
 ## Licence
 
