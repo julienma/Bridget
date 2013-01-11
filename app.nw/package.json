@@ -4,7 +4,7 @@
   "main": "source/init.html",
 
   "description": "Bridge Template Upload",
-  "version": "0.1",
+  "version": "1.0",
   "window": {
     "title":"Bridget",
     "icon": "package.png",

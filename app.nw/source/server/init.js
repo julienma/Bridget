@@ -2,9 +2,9 @@
 INIT
 */
 
-// TODO: package as standalone, hide dock icon
-// https://github.com/rogerwang/node-webkit/wiki/How-to-package-and-distribute-your-apps
-// http://cocoadevcentral.com/articles/000071.php
+// Download Bridget.app: http://cl.ly/0Y0D421o1Q2j
+
+// TODO: Run on startup
 
 // TODO: nice mkg page? Ex. http://apps.shopify.com/desktop-theme-editor
 
