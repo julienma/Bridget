@@ -2,11 +2,6 @@
 INIT
 */
 
-// Download Bridget.app: http://cl.ly/0Y0D421o1Q2j
-
-// TODO: Run on startup
-
-// TODO: nice mkg page? Ex. http://apps.shopify.com/desktop-theme-editor
 
 /*
 Create tray menu
