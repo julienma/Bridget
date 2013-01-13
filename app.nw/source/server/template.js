@@ -64,8 +64,7 @@ function zipAndUpload(templateDir, uploadUrl, templateName) {
     zip.on('exit', function(code) {
         if(code !== 0) {
             console.log('ZIP Failed: ' + code);
-            alert('ZIP Failed: ' + code);
-            growl('ZIP creation failed!', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
+            growl('ZIP creation failed! (' + code + ')', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
         } else {
             console.log('ZIP OK');
             // start upload
@@ -94,10 +93,8 @@ function uploadWithCurl(templateDir, uploadUrl, templateName) {
         // try to find the success string (otherwise it could be a 401, 301, etc.)
         if (log.lastIndexOf(successString) !=-1) {
             console.log('UPLOAD DONE');
-            growl('Upload successfull on ' + templateName + '! (Source: ' + templateDir + ')', { title: 'Bridget', image: 'source/img/tray-icon.png' });
         } else {
           console.log('UPLOAD Failed (could be 401, 301, etc.)');
-          alert('UPLOAD Failed (could be 401, 301, etc.)');
           growl('UPLOAD failed (could be 401, 301, etc.)', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
         }
 
@@ -106,9 +103,11 @@ function uploadWithCurl(templateDir, uploadUrl, templateName) {
     curl.on('exit', function(code) {
         if (code !== 0) {
             console.log('CURL Failed: ' + code);
-            alert('CURL Failed: ' + code);
-            growl('CURL process failed!', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
-        } else console.log('CURL OK');
+            growl('CURL process failed! (' + code + ')', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
+        } else {
+          console.log('CURL OK');
+          growl('Upload successfull on ' + templateName + '! (Source: ' + templateDir + ')', { title: 'Bridget', image: 'source/img/tray-icon.png' });
+        }
         // remove lock so we can upload once again
         unlock();
 
