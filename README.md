@@ -8,7 +8,7 @@ Watch local template folder for changes, and auto-upload template to an associat
 
 ### Node & node-webkit
 
-- [Node.js](http://nodejs.org/) (> 0.8.16): recommanded installation through [NVM](https://github.com/creationix/nvm)
+- [Node.js](http://nodejs.org/) (> 0.8.16): recommanded installation through [NVM](https://github.com/creationix/nvm). Used for development only, as node-webkit has its own node binary already built-in.
 - [node-webkit](https://github.com/rogerwang/node-webkit) (> 0.3.6): download [prebuilt binary](https://github.com/rogerwang/node-webkit#downloads), and drop it in your Applications folder (OSX)
 
 ### Node modules
