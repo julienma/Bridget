@@ -2,6 +2,14 @@
 INIT
 */
 
+/*
+Global settings
+*/
+
+// define filename to which to zip (and to exclude from watchr)
+global.zipfile = '_bridget.zip';
+// define filetypes to ignore (won't be watched for changes, and won't be zipped)
+global.excludeFileExtension = ['zip', 'command', 'html'];
 
 /*
 Create tray menu
@@ -23,10 +31,3 @@ var settingsPath = process.env.HOME;
 settings.file(settingsPath + '/.bridget_settings.json');
 // read settings.json, populate tray and start watchr
 settings.loadAndWatchFolders();
-
-/*
-Global settings
-*/
-
-// define filename to which to zip (and to exclude from watchr)
-global.zipfile = '_bridget.zip';

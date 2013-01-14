@@ -28,6 +28,24 @@ function isLocked () {
   return locked;
 }
 
+// display an "upload success" message only if both curl exit/end events are OK
+var isCurlEndSuccessful, isCurlExitSuccessful;
+function isUploadSuccessful(e, isSuccess, templateDir, templateName) {
+  switch(e) {
+    case 'end':
+      isCurlEndSuccessful = (isSuccess)?true:false;
+      break;
+    case 'exit':
+      isCurlExitSuccessful = (isSuccess)?true:false;
+      break;
+  }
+  console.log('SUCCESS? - End: ' + isCurlEndSuccessful + ' - Exit: ' + isCurlExitSuccessful);
+
+  if(isCurlEndSuccessful && isCurlExitSuccessful) {
+    growl('Upload successfull on ' + templateName + '! (Source: ' + templateDir + ')', { title: 'Bridget', image: 'source/img/tray-icon.png' });
+  }
+}
+
 function upload (filePath, loadedSettings) {
   // set a lock so we avoid uploading more than once
   lock();
@@ -50,7 +68,13 @@ function upload (filePath, loadedSettings) {
 
 function zipAndUpload(templateDir, uploadUrl, templateName) {
     // Options -r recursive
-    var zip = spawn('zip', ['-r', global.zipfile, '.'], {
+    var zipOptions = ['-r', '-X', global.zipfile, '.', '-x'];
+    // add exclude files in the option array
+    for (var i=0; i<global.excludeFileExtension.length; i++) {
+      zipOptions.push('*.' + global.excludeFileExtension[i]);
+    }
+
+    var zip = spawn('zip', zipOptions, {
         cwd: templateDir,
         env: process.env
     });
@@ -93,6 +117,7 @@ function uploadWithCurl(templateDir, uploadUrl, templateName) {
         // try to find the success string (otherwise it could be a 401, 301, etc.)
         if (log.lastIndexOf(successString) !=-1) {
             console.log('UPLOAD DONE');
+            isUploadSuccessful('end', true, templateDir, templateName);
         } else {
           console.log('UPLOAD Failed (could be 401, 301, etc.)');
           growl('UPLOAD failed (could be 401, 301, etc.)', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
@@ -106,7 +131,7 @@ function uploadWithCurl(templateDir, uploadUrl, templateName) {
             growl('CURL process failed! (' + code + ')', { title: 'Bridget', image: 'source/img/tray-icon-active.png' });
         } else {
           console.log('CURL OK');
-          growl('Upload successfull on ' + templateName + '! (Source: ' + templateDir + ')', { title: 'Bridget', image: 'source/img/tray-icon.png' });
+          isUploadSuccessful('exit', true, templateDir, templateName);
         }
         // remove lock so we can upload once again
         unlock();

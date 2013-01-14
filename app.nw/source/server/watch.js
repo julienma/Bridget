@@ -10,6 +10,14 @@ var watchJob = {};
 function start (pathsToWatch, loadedSettings) {
     // Watch a directory or file
     console.log("Start watching for paths: " + pathsToWatch);
+
+    // add exclude files in the option array
+    var ignoreOptions = null;
+    if (global.excludeFileExtension.length > 0) {
+        ignoreOptions = new RegExp('(\\.(' + global.excludeFileExtension.join('|') + '))$','i');
+    }
+    console.log('WATCHR IGNORE: ' + ignoreOptions);
+
     watchr.watch({
         paths: pathsToWatch,
         listeners: {
@@ -35,7 +43,7 @@ function start (pathsToWatch, loadedSettings) {
         },
         ignoreHiddenFiles: true, // ignore files which filename starts with a .
         ignoreCommonPatterns: true, // ignore common undesirable file patterns (e.g. .svn, .git, .DS_Store, thumbs.db, etc)
-        ignoreCustomPatterns: /(\.(command|zip))$/i, // ignore specific extensions, which are useless to templates and could interfere with normal behavior
+        ignoreCustomPatterns: ignoreOptions, // ignore specific extensions, which are useless to templates and could interfere with normal behavior
         persistent: true
     });
 }
