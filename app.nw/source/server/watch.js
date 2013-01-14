@@ -20,7 +20,7 @@ function start (pathsToWatch, loadedSettings) {
             change: function(changeType,filePath,fileCurrentStat,filePreviousStat){
                 console.log('a change event occured - Type: ' + changeType + ' - Path: ' + filePath);
                 // do nothing if the changed file is the generated zipfile OR if there's a lock (set by previous upload)
-                if ((filePath.indexOf(global.zipfile) !=-1) || template.isLocked() || (filePath.split('.').pop() == 'zip')) {
+                if ((filePath.indexOf(global.zipfile) !=-1) || template.isLocked()) {
                     console.log('WATCHR: Locked / Ignored file');
                 } else {
                     template.upload(filePath, loadedSettings);
@@ -35,11 +35,7 @@ function start (pathsToWatch, loadedSettings) {
         },
         ignoreHiddenFiles: true, // ignore files which filename starts with a .
         ignoreCommonPatterns: true, // ignore common undesirable file patterns (e.g. .svn, .git, .DS_Store, thumbs.db, etc)
-
-        // commenting this while waiting for https://github.com/bevry/watchr/issues/29
-        // once fixed, rewind l.23 (filePath.split('.').pop() == 'zip') and uncomment here
-        // ignoreCustomPatterns: /^(\.(command|zip))$/i, // ignore specific extensions, which are useless to templates and could interfere with normal behavior
-
+        ignoreCustomPatterns: /(\.(command|zip))$/i, // ignore specific extensions, which are useless to templates and could interfere with normal behavior
         persistent: true
     });
 }
