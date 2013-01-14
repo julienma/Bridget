@@ -4,6 +4,42 @@ Bridge Template Upload.
 
 Watch local template folder for changes, and auto-upload template to an associated Bridge dev server, through Bridge API.
 
+# 1. Use it!
+
+## Installation (OSX 10.7.5)
+
+Either
+
+1. Download the latest standalone, prebuilt binary (OSX only - 24MB): http://cl.ly/3j3Y090F3T2w
+
+2. Download the [node-webkit binary](https://github.com/rogerwang/node-webkit#downloads) and the latest [Bridget.nw](https://github.com/julienma/Bridget/raw/master/build/Bridget.nw)
+
+### Growl notifications (optional)
+
+You should install [growlnotify(1)](http://growl.info/extras.php#growlnotify) if you want to get Growl notifications when uploads are done.
+
+### Compatibility
+
+This is tested and working on OSX only.
+
+As it is implemented now, it could theorically work on Windows with minimal code adaptation.
+However, it is currently based on cURL and zip OSX binaries, so until those features are built-in (using Node modules), you will have to manually install cURL and zip's windows-compatible CLIs. And even then, it's not garanteed to work.
+
+## Usage
+
+TODO
+
+### Settings file
+
+Your watched folders are saved in a hidden `.bridget_settings.json` JSON file in your $HOME directory.
+It is created the first time you add a watched folder.
+You can back it up if needed.
+
+Note that it should never be empty, otherwise app won't load.
+If you want to reset your watched directory, do not empty and save the file, just delete it.
+
+# 2. Hack it!
+
 ## Prerequisites
 
 ### Node & node-webkit
@@ -36,10 +72,10 @@ npm install growl
 
 ## Build (OSX 10.7.5)
 
-Make sure the _package.command script is executable
+Make sure the _build.command script is executable
 
 ```
-chmod u+x _package.command
+chmod u+x _build.command
 ```
 
 Make sure your package.json references your entry point file, e.g:
@@ -49,27 +85,11 @@ Make sure your package.json references your entry point file, e.g:
 }
 ```
 
-Then run it, it will package an _app.nw and launch it through node-webkit.
+Then run it, it will package both Bridget.nw (light archive needing node-webkit binary) and Bridget.app (standalone app -- but far bigger).
+It will also open the .app so you can test it immediately.
 
-## Usage
+For development, you can run _test.command instead, it will just package an _app.nw and launch it through node-webkit.
 
-### Settings file
-
-Your watched folders are saved in a hidden `.bridget_settings.json` JSON file in your $HOME directory.
-It is created the first time you add a watched folder.
-You can back it up if needed.
-
-Note that it should never be empty, otherwise app won't load.
-If you want to reset your watched directory, do not empty and save the file, just delete it.
-
-### Installation
-
-TODO
-
-### Growl notifications (optional)
-
-You should install [growlnotify(1)](http://growl.info/extras.php#growlnotify) if you want to get Growl notifications when uploads are done.
-
-## Licence
+# Licence
 
 Tray icon using Entypo pictograms by Daniel Bruce — www.entypo.com
