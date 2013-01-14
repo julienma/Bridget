@@ -10,7 +10,7 @@ Watch local template folder for changes, and auto-upload template to an associat
 
 Either
 
-1. Download the latest standalone, prebuilt binary (OSX only - 24MB): http://cl.ly/3j3Y090F3T2w
+1. Download the latest standalone, prebuilt binary (OSX only - 24MB): http://cl.ly/401C11182j3q
 
 2. Download the [node-webkit binary](https://github.com/rogerwang/node-webkit#downloads) and the latest [Bridget.nw](https://github.com/julienma/Bridget/raw/master/build/Bridget.nw)
 
