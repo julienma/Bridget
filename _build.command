@@ -7,11 +7,9 @@ cd $BASEDIR
 rm ./build/Bridget.nw
 rm -R ./build/Bridget.app
 
-#cd $BASEDIR/app.nw
-zip -r -q ./build/Bridget.nw ./app.nw/ -x _*.*
-
-#cd ..
-#mv ./app.nw/Bridget.nw .
+pushd $BASEDIR/app.nw
+zip -r -X -q ../build/Bridget.nw . -x _*.*
+popd
 
 cp -R /Applications/node-webkit.app ./build/Bridget.app
 
