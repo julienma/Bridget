@@ -9,7 +9,7 @@ Global settings
 // define filename to which to zip (and to exclude from watchr)
 global.zipfile = '_bridget.zip';
 // define filetypes to ignore (won't be watched for changes, and won't be zipped)
-global.excludeFileExtension = ['zip', 'command', 'html'];
+global.excludeFileExtension = ['zip', 'command'];
 
 /*
 Create tray menu
