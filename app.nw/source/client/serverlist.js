@@ -7,22 +7,22 @@ var authPwd = '';
 var apiServer = [
   {
     id:'q',
-    url:'https://' + authLogin + ':' + authPwd + '@api-q.leadformance.com',
+    url:'https://' + authLogin + ':' + authPwd + '@api.q.leadformance.com',
     name:'Internal QA (.q)'
   },
   {
     id:'c',
-    url:'https://' + authLogin + ':' + authPwd + '@api-c.leadformance.com',
+    url:'https://' + authLogin + ':' + authPwd + '@api.c.leadformance.com',
     name:'Client QA (.c)'
   },
   {
     id:'i',
-    url:'https://' + authLogin + ':' + authPwd + '@api-i.leadformance.com',
+    url:'https://' + authLogin + ':' + authPwd + '@api.i.leadformance.com',
     name:'Integrator (.i)'
   },
   {
     id:'s',
-    url:'https://' + authLogin + ':' + authPwd + '@api-s.leadformance.com',
+    url:'https://' + authLogin + ':' + authPwd + '@api.s.leadformance.com',
     name:'Staging (.s)'
   }
 ];
