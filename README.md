@@ -27,7 +27,7 @@ However, it is currently based on cURL and zip OSX binaries, so until those feat
 
 ## Usage
 
-TODO
+![Bridget lives in the menu bar / tray](https://raw.github.com/julienma/Bridget/master/readme.png)
 
 ### Settings file
 
