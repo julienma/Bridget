@@ -16,7 +16,7 @@ Either
 
 ### Growl notifications (optional)
 
-You should install [growlnotify(1)](http://growl.info/extras.php#growlnotify) if you want to get Growl notifications when uploads are done.
+If you are using [Growl](http://growl.info) > 1.3, you will get notifications when upload are done.
 
 ### Compatibility
 
@@ -49,8 +49,16 @@ If you want to reset your watched directory, do not empty and save the file, jus
 
 ### Node modules
 
-These are already included in the repo under `./node_modules`.
+These are already included in the repo under `./app.nw/node_modules`.
 You can reinstall / update them through [NPM](https://npmjs.org/) (should already be shipped with any recent version of Node).
+
+Note that:
+
+- You need to be in the `./app.nw` folder in order to install the node modules in `./app.nw/node_modules`.
+
+- The `app.nw/package.json` file is used by node-webkit, and might conflict with npm. Just temporarily rename it, run your `npm install bla`, and rename it back before building the app.
+
+**Modules:**
 
 - [Watchr](https://github.com/bevry/watchr): provides a normalised API the file watching APIs of different node versions, nested/recursive file and directory watching, and accurate detailed events for file/directory creations, updates, and deletions.
 
@@ -64,10 +72,10 @@ npm install watchr
 npm install nconf
 ```
 
-- [node-growl](https://github.com/visionmedia/node-growl): Growl support for Nodejs. Needs [growlnotify(1)](http://growl.info/extras.php#growlnotify).
+- [Node Growler](https://github.com/betamos/Node-Growler): A Growl server for node.js which sends notifications to remote and local Growl clients using GNTP. Needs [Growl](http://growl.info) > 1.3.
 
 ```
-npm install growl
+npm install growler
 ```
 
 ## Build (OSX 10.7.5)
