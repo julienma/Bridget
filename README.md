@@ -66,10 +66,16 @@ Note that:
 npm install watchr
 ```
 
-- [nconf](https://github.com/flatiron/nconf): save and load node.js configuration to JSON files.
+- [nconf](https://github.com/flatiron/nconf): save and load node.js configuration to JSON files. Used to save watched folder settings.
 
 ```
 npm install nconf
+```
+
+- [Request](https://github.com/mikeal/request): Request is designed to be the simplest way possible to make http calls. It supports HTTPS and follows redirects by default. Used to PUT zipped templates to Bridge API.
+
+```
+npm install request
 ```
 
 - [Node Growler](https://github.com/betamos/Node-Growler): A Growl server for node.js which sends notifications to remote and local Growl clients using GNTP. Needs [Growl](http://growl.info) > 1.3.
