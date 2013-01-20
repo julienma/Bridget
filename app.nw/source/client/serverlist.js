@@ -3,22 +3,22 @@
 var apiServer = [
   {
     id:'q',
-    url:'https://api.q.leadformance.com',
+    url:'https://api-q.leadformance.com',
     name:'Internal QA (.q)'
   },
   {
     id:'c',
-    url:'https://api.c.leadformance.com',
+    url:'https://api-c.leadformance.com',
     name:'Client QA (.c)'
   },
   {
     id:'i',
-    url:'https://api.i.leadformance.com',
+    url:'https://api-i.leadformance.com',
     name:'Integrator (.i)'
   },
   {
     id:'s',
-    url:'https://api.s.leadformance.com',
+    url:'https://api-s.leadformance.com',
     name:'Staging (.s)'
   }
 ];
