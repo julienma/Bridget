@@ -78,6 +78,18 @@ npm install nconf
 npm install request
 ```
 
+- [node-native-zip](https://github.com/janjongboom/node-native-zip): Zipping in node.js with no external dependencies.
+
+```
+npm install node-native-zip
+```
+
+- [dive](https://github.com/pvorb/node-dive): walk through directory trees and apply an action to every file.
+
+```
+npm install dive
+```
+
 - [Node Growler](https://github.com/betamos/Node-Growler): A Growl server for node.js which sends notifications to remote and local Growl clients using GNTP. Needs [Growl](http://growl.info) > 1.3.
 
 ```
