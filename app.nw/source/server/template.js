@@ -1,4 +1,8 @@
 var spawn = require('child_process').spawn;
+var fs = require('fs');
+var path = require('path');
+var dive = require('dive');
+var zip = require('node-native-zip');
 
 // require common serverlist (both server & browser)
 var serverlist = require('../client/serverlist.js');
@@ -72,33 +76,58 @@ function upload (filePath, loadedSettings) {
 }
 
 function zipAndUpload(templateDir, uploadUrl, templateName) {
-  // Options -r recursive
-  var zipOptions = ['-r', '-X', global.zipfile, '.', '-x'];
-  // add exclude files in the option array
-  for (var i=0; i<global.excludeFileExtension.length; i++) {
-    zipOptions.push('*.' + global.excludeFileExtension[i]);
-  }
+  var archive = new zip();
+  var zipFiles = [];
 
-  var zip = spawn('zip', zipOptions, {
-      cwd: templateDir,
-      env: process.env
-  });
-
-  zip.stderr.on('data', function (data) {
-      // see the files being added
-      console.log('zip stderr: ' + data);
-  });
-
-  // End the response on zip exit
-  zip.on('exit', function(code) {
-      if(code !== 0) {
-          console.log('ZIP Failed: ' + code);
-          notification.send('Upload Failure', 'ZIP creation failed! (' + code + ')', true);
-      } else {
-          console.log('ZIP OK');
-          // start upload
-          uploadWithCurl(templateDir, uploadUrl, templateName);
+  // recursively dive through every directory of the path
+  dive(templateDir, function(err, file) {
+    if (err) {
+      console.log('DIVE Failed: ' + err);
+      notification.send('Upload Failure', 'ZIP creation failed! (dive: ' + err + ')', true);
+    } else {
+      var isExcluded = false;
+      // check if file should be excluded from zip, based on exclude list
+      for (var i=0; i<global.excludeFileExtension.length; i++) {
+        // get file extension
+        if (file.split('.').splice(-1,1) == global.excludeFileExtension[i]) {
+          isExcluded = true;
+          console.log('ZIP excluded file: ' + file);
+        }
       }
+      // if file is not excluded
+      if(!isExcluded){
+        // then add it to the list of files to be zipped
+        zipFiles.push({
+          // clean the path inside the zip, so it's relative to the root of the templateDir
+          name: file.replace(templateDir, ''),
+          path: file
+        });
+      }
+    }
+  }, function() {
+    for (var key in zipFiles){
+      console.log('ZIP - ' + key + ' = ' + zipFiles[key].name + ' - ' + zipFiles[key].path);
+    }
+    // actually zip the files
+    archive.addFiles(zipFiles, function (err) {
+      if (err) {
+        console.log('ZIP Failed: ' + code);
+        notification.send('Upload Failure', 'ZIP creation failed! (addFiles: ' + err + ')', true);
+      } else {
+        // and write it in template directory
+        fs.writeFile(path.join(templateDir, global.zipfile), archive.toBuffer(), function (err) {
+          if (err) {
+            console.log('ZIP Failed: ' + code);
+            notification.send('Upload Failure', 'ZIP creation failed! (writeFile: ' + err + ')', true);
+          } else {
+            console.log('ZIP OK');
+            // start upload
+            uploadWithCurl(templateDir, uploadUrl, templateName);
+          }
+        });
+      }
+    });
+    console.log('DIVE complete');
   });
 
 }
