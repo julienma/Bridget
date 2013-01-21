@@ -81,8 +81,8 @@ function zipAndUpload(templateDir, uploadUrl, templateName) {
       if(!isExcluded){
         // then add it to the list of files to be zipped
         zipFiles.push({
-          // clean the path inside the zip, so it's relative to the root of the templateDir
-          name: file.replace(templateDir, ''),
+          // clean the path inside the zip, so it's relative to the root of the templateDir -- don't forget trailing slash (path.sep is platform-specific file separator. '\\' or '/'.)
+          name: file.replace(templateDir + path.sep, ''),
           path: file
         });
       }
