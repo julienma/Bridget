@@ -72,10 +72,10 @@ npm install watchr
 npm install nconf
 ```
 
-- [Request](https://github.com/mikeal/request): Request is designed to be the simplest way possible to make http calls. It supports HTTPS and follows redirects by default. Used to PUT zipped templates to Bridge API.
+- [Restler](https://github.com/danwrong/restler): An HTTP client library for node.js (0.6.x and up). Hides most of the complexity of creating and using http.Client. Used to PUT zipped templates to Bridge API.
 
 ```
-npm install request
+npm install restler
 ```
 
 - [node-native-zip](https://github.com/janjongboom/node-native-zip): Zipping in node.js with no external dependencies.
