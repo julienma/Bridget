@@ -3,6 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var dive = require('dive');
 var zip = require('node-native-zip');
+var rest = require('restler');
 
 // require common serverlist (both server & browser)
 var serverlist = require('../client/serverlist.js');
@@ -31,24 +32,6 @@ function unlock() {
 function isLocked () {
   console.log('IS LOCKED? ' + locked);
   return locked;
-}
-
-// display an "upload success" message only if both curl exit/end events are OK
-var isCurlEndSuccessful, isCurlExitSuccessful;
-function isUploadSuccessful(e, isSuccess, templateDir, templateName) {
-  switch(e) {
-    case 'end':
-      isCurlEndSuccessful = (isSuccess)?true:false;
-      break;
-    case 'exit':
-      isCurlExitSuccessful = (isSuccess)?true:false;
-      break;
-  }
-  console.log('SUCCESS? - End: ' + isCurlEndSuccessful + ' - Exit: ' + isCurlExitSuccessful);
-
-  if(isCurlEndSuccessful && isCurlExitSuccessful) {
-    notification.send('Upload Success', 'Upload successful on ' + templateName + '! (Source: ' + templateDir + ')');
-  }
 }
 
 function upload (filePath, loadedSettings) {
@@ -122,7 +105,7 @@ function zipAndUpload(templateDir, uploadUrl, templateName) {
           } else {
             console.log('ZIP OK');
             // start upload
-            uploadWithCurl(templateDir, uploadUrl, templateName);
+            uploadWithRequest(templateDir, uploadUrl, templateName);
           }
         });
       }
@@ -132,45 +115,40 @@ function zipAndUpload(templateDir, uploadUrl, templateName) {
 
 }
 
-function uploadWithCurl(templateDir, uploadUrl, templateName) {
-  // execute curl using child_process' spawn function
-  var curl = spawn('curl', ['-i', '-F', 'template=@' + zipfile, '-F', '_method=PUT', uploadUrl], {
-      cwd: templateDir,
-      env: process.env
-  });
-  curl.stdout.setEncoding('utf8');
-  // display the curl output with a 'data' event listener
-  var log = '';
-  curl.stdout.on('data', function(data) {
-      // console.log(data);
-      log += data;
-  });
-  // 'end' event listener
-  curl.stdout.on('end', function(data) {
-      var successString = 'HTTP/1.1 200 OK';
-      // try to find the success string (otherwise it could be a 401, 301, etc.)
-      if (log.lastIndexOf(successString) !=-1) {
+function uploadWithRequest(templateDir, uploadUrl, templateName) {
+  var templateFile = path.join(templateDir, global.zipfile);
+  var fileSize;
+
+  // get file size of attached zip (necessary for multipart upload)
+  fs.stat(templateFile, function(err, stats) {
+    if (err) {
+      notification.send('Upload Failure', 'Can\'t read zip! (' + err + ')', true);
+    } else if (stats.isFile()){
+      fileSize = stats.size;
+      console.log('UPLOADING ' + templateFile + ' (' + fileSize + ')');
+
+      // PUT HTTP request to /templates/:id.json
+      rest.put(uploadUrl, {
+        multipart: true,
+        data: {
+          // rest.file(path, filename, fileSize, encoding, contentType)
+          'template': rest.file(templateFile, null, fileSize, null, null)
+        }
+      }).on('complete', function(data, response) {
+        // console.log(data);
+        if (response.statusCode == 200) {
           console.log('UPLOAD DONE');
-          isUploadSuccessful('end', true, templateDir, templateName);
-      } else {
-        console.log('UPLOAD Failed (could be 401, 301, etc.)');
-        notification.send('Upload Failure', 'UPLOAD failed (could be 401, 301, etc.)', true);
-      }
-
+          notification.send('Upload Success', 'Upload successful on ' + templateName + '! (Source: ' + templateDir + ')');
+        } else {
+          console.log('UPLOAD Failed (statuscode: ' + response.statusCode + ')');
+          notification.send('Upload Failure', 'UPLOAD failed! (statuscode: ' + response.statusCode + ')', true);
+        }
+        // remove lock so we can upload once again
+        unlock();
+      });
+    }
   });
-  // spawned child_process exits
-  curl.on('exit', function(code) {
-      if (code !== 0) {
-          console.log('CURL Failed: ' + code);
-          notification.send('Upload Failure', 'CURL process failed! (' + code + ')', true);
-      } else {
-        console.log('CURL OK');
-        isUploadSuccessful('exit', true, templateDir, templateName);
-      }
-      // remove lock so we can upload once again
-      unlock();
 
-  });
 }
 
 exports.upload = upload;
