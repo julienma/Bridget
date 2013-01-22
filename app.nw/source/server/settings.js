@@ -21,14 +21,16 @@ function read (callback){
       for(var key in conf) {
         i++;
         loadedSettings.push({});
-        loadedSettings[i]['path'] = key;
+        // unescape path (escaped in the json)
+        loadedSettings[i]['path'] = unescape(key);
         // console.log('key: ' + key + '\n' + 'value: ' + conf[key]);
         for(var key2 in conf[key]) {
           loadedSettings[i]['serverId'] = key2;
           for(var key3 in conf[key][key2]) {
             loadedSettings[i]['apiKey'] = conf[key][key2]['apikey'];
             loadedSettings[i]['templateId'] = conf[key][key2][key3]['id'];
-            loadedSettings[i]['templateName'] = conf[key][key2][key3]['name'];
+            // unescape template name (escaped in the json)
+            loadedSettings[i]['templateName'] = unescape(conf[key][key2][key3]['name']);
           }
         }
         // console.log('- ' + i + ' -------------------');
@@ -66,6 +68,11 @@ function save (templateSettings, callback){
   // clear the current entry to make sure there is only 1 server for each watched path
   // this will have to be removed and worked around if we want to manage multiple servers (c, q, s, etc.) for each path
   nconf.clear(templateSettings.path, function(){
+    // fix path on Windows by escaping it (and avoid nconf splitting the string on ':')
+    templateSettings.path = escape(templateSettings.path);
+    // and escape the template name, as it is free form and could contain colons
+    templateSettings.templateName = escape(templateSettings.templateName);
+
     // set the settings for the current path
     nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':apikey', templateSettings.apiKey);
     nconf.set(templateSettings.path + ':' + templateSettings.serverId + ':template:id', templateSettings.templateId);
