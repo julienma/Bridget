@@ -86,8 +86,9 @@ function addWatchedFolder(loadedSettings, position){
     }
   }));
 
-  // get the last folder from the path
-  var folder = '/' + loadedSettings[position].path.split('/').splice(-1,1);
+  // get the last folder from the path.
+  // require('path').sep is platform-specific file separator. '\\' or '/'.
+  var folder = '/' + loadedSettings[position].path.split(require('path').sep).splice(-1,1);
 
   var item = new gui.MenuItem({
     label: folder + '  >  ' + loadedSettings[position].templateName,

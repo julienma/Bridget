@@ -31,7 +31,7 @@ However, it is currently based on cURL and zip OSX binaries, so until those feat
 
 ### Settings file
 
-Your watched folders are saved in a hidden `.bridget_settings.json` JSON file in your $HOME directory.
+Your watched folders are saved in a hidden `.bridget_settings.json` JSON file under your $HOME directory (or under $USERPROFILE on Windows, which should be somewhere like 'C:\Users\YourUsername').
 It is created the first time you add a watched folder.
 You can back it up if needed.
 

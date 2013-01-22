@@ -26,8 +26,10 @@ Start watching saved folders
 
 // require local Settings package (nconf)
 var settings = require('./server/settings.js');
-// set the settings file to use
-var settingsPath = process.env.HOME;
-settings.file(settingsPath + '/.bridget_settings.json');
+// set the path of the settings file
+// $HOME might not be set on Windows, so we use $USERPROFILE
+var settingsPath = (process.env.HOME || process.env.USERPROFILE);
+// make sure the path is normalized, so it works on windows ('/' vs '\\')
+settings.file(require('path').join(settingsPath, '.bridget_settings.json'));
 // read settings.json, populate tray and start watchr
 settings.loadAndWatchFolders();
