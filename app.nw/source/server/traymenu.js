@@ -123,7 +123,8 @@ function create() {
     label: 'Watch a folder...',
     click: function(){
       // open a new window with the "Watch new folder" page.
-      win.window.location.href = 'add.html';
+      //win.window.location.href = 'add.html';
+      win.reload();
       win.show();
       win.focus();
     }
