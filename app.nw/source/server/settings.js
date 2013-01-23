@@ -94,7 +94,7 @@ function save (templateSettings, callback){
 // removes the specified key (and below tree) from settings.json
 function clear (key, callback) {
   console.log("SETTINGS clear: " + key);
-  nconf.clear(key, function () {
+  nconf.clear(escape(key), function () {
     nconf.save(function (err){
       if (err) {
         console.error(err.message);
