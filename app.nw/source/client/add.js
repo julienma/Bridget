@@ -224,6 +224,66 @@ $(document).ready(function(){
     return false;
   }
 
+/*
+  disable default behavior on dropped file, and implement custom HTML5 drag and drop.
+  Drop a folder on the "watch folder" section
+*/
+var $dropZone = $('#dropZone');
+
+window.ondragover = function(e) {
+  e.preventDefault();
+  $dropZone.addClass('display');
+  return false;
+};
+window.ondragend = function(e) {
+  e.preventDefault();
+  return false;
+};
+window.ondrop = function(e) {
+  e.preventDefault();
+  $dropZone.removeClass('display hover');
+  return false;
+};
+
+// Attach our drag and drop handlers.
+$dropZone.bind({
+    dragover: function () {
+        $(this).addClass('hover');
+        return false;
+    },
+    dragend: function () {
+        $(this).removeClass('display hover');
+        return false;
+    },
+    dragenter: function () {
+        $(this).addClass('hover');
+        return false;
+    },
+    dragleave: function () {
+        $(this).removeClass('hover');
+        return false;
+    },
+    drop: function (e) {
+        $(this).removeClass('display hover');
+
+        e = e || window.event;
+        e.preventDefault();
+
+        // jQuery wraps the originalEvent, so we try to detect that here...
+        e = e.originalEvent || e;
+        // Using e.files with fallback because e.dataTransfer is immutable and can't be overridden in Polyfills (http://sandbox.knarly.com/js/dropfiles/).
+        var files = (e.files || e.dataTransfer.files);
+
+        for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+          console.log(e.dataTransfer.files[i].path);
+          displayAlert('#step2 #alert', 'Using <strong>' + e.dataTransfer.files[i].path + '</strong>', 'success');
+          // save the path settings
+          templateSettings.path = e.dataTransfer.files[i].path;
+          checkIfEnableSave();
+        }
+        return false;
+    }
+});
 
 /*
   assign actions to buttons

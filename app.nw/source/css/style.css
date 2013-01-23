@@ -2,6 +2,34 @@
   margin-top: 10px;
 }
 
+#dropZone {
+  display: none;
+  width: 88%;
+  height: 340px; /*76px*/
+  margin: 10px auto;
+  color: #5A5A5A;
+
+  position: absolute;
+  top: 0;
+  left: 3%;
+  z-index: 10;
+}
+
+#dropZone.display {
+  display: block;
+  top: 60px;
+}
+
+#dropZone.hover {
+  color: #468847;
+  background-color: #DFF0D8;
+}
+
+#dropZone .instructions {
+  margin-top: 145px;
+  text-align: center;
+}
+
 /*Easel.io export*/
 /*
 html {

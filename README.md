@@ -29,6 +29,12 @@ However, it is currently based on cURL and zip OSX binaries, so until those feat
 
 ![Bridget lives in the menu bar / tray](https://raw.github.com/julienma/Bridget/master/readme.png)
 
+1. Add a folder to watch for changes (browse or drag and drop the target folder).
+
+2. Enter the **write_templates** API key, refresh and select the target template slot, save.
+
+3. Any change done in the watched folder will be uploaded within 30s to the template slot.
+
 ### Settings file
 
 Your watched folders are saved in a hidden `.bridget_settings.json` JSON file under your $HOME directory (or under $USERPROFILE on Windows, which should be somewhere like 'C:\Users\YourUsername').
