@@ -2,6 +2,13 @@
 INIT
 */
 
+global.currentVersion = "0.9";
+
+// check if an update is available
+var version = require('./server/version.js');
+// give some time before checking, so everything else is warmed up (watchr, growler)
+setTimeout(version.check, 10000);
+
 /*
 Global settings
 */
