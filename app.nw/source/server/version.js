@@ -3,7 +3,7 @@ var rest = require('restler');
 var gui = window.require('nw.gui');
 
 function check() {
-  rest.get('https://raw.github.com/julienma/Bridget/master/version.json').on('complete', function(res) {
+  rest.get('https://raw.github.com/julienma/Bridget/master/app.nw/version.json').on('complete', function(res) {
     if (res instanceof Error) {
         console.log('Error checking version update: ' + res.message);
       } else {
