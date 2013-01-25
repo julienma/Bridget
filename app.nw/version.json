@@ -1,0 +1,5 @@
+{
+  "version": "1.0",
+  "message": "Working stand-alone packaged version, for real-life use!\nNo external dependencies needed for zip or curl, will use node modules.",
+  "updateUrl": "https://github.com/julienma/Bridget#1-use-it"
+}
