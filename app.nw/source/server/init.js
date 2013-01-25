@@ -7,7 +7,9 @@ global.currentVersion = "0.9";
 // check if an update is available
 var version = require('./server/version.js');
 // give some time before checking, so everything else is warmed up (watchr, growler)
-setTimeout(version.check, 10000);
+setTimeout(version.check, 10*1000);
+// and check every 8hrs
+setInterval(version.check, 8*60*60*1000);
 
 /*
 Global settings
