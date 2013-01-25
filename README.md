@@ -6,24 +6,32 @@ Watch local template folder for changes, and auto-upload template to an associat
 
 # 1. Use it!
 
-## Installation (OSX 10.7.5)
+## Installation
 
-Either
+### OSX
 
-1. Download the latest standalone, prebuilt binary (OSX only - 25MB): http://cl.ly/0L2E250q0p0r
+- Download [OSX standalone .app - v1.0](http://cl.ly/031q0Z2O3o1L/download/Bridget.app.zip) (25MB)
+- Unzip and move to /Applications
+- If you want Bridget to start automatically, move Bridget.app in the dock to create a shortcut, right-click on it, and select Options > Open at login.
 
-2. Download the [node-webkit binary](https://github.com/rogerwang/node-webkit#downloads) and the latest [Bridget.nw](https://github.com/julienma/Bridget/raw/master/build/Bridget.nw)
+### Windows
+
+- Download Windows standalone .exe - v1.0 (Soon)
+- Unzip and double-click on .exe
+
+### .NW Package
+
+Alternatively, you could download the [node-webkit binary](https://github.com/rogerwang/node-webkit#downloads) and the latest [Bridget.nw](https://github.com/julienma/Bridget/raw/master/build/Bridget.nw), which is far lighter (< 1MB).
+Just drag the Bridget.nw over the node-webkit binary, and zam!
 
 ### Growl notifications (optional)
 
-If you are using [Growl](http://growl.info) > 1.3, you will get notifications when upload are done.
+If you are using [Growl](http://growl.info) > 1.3, you will get notifications when uploads are done.
 
 ### Compatibility
 
-This is tested and working on OSX only.
-
-As it is implemented now, it could theorically work on Windows with minimal code adaptation.
-However, it is currently based on cURL and zip OSX binaries, so until those features are built-in (using Node modules), you will have to manually install cURL and zip's windows-compatible CLIs. And even then, it's not garanteed to work.
+This has been tested on OSX 10.7 and Windows 8.
+It should be compatible with Windows 7 and some Linux, as long as you use the right node-webkit binary to open Bridget.nw.
 
 ## Usage
 
