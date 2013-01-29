@@ -1,5 +1,5 @@
 {
-  "version": "0.9",
-  "message": "Working stand-alone packaged version, for real-life use!\nNo external dependencies needed for zip or curl, will use node modules.",
-  "updateUrl": "https://github.com/julienma/Bridget#1-use-it"
+  "version": "1.1",
+  "message": "Stand-alone version, available for both OSX and Win32. Includes HTTP Auth.",
+  "updateUrl": "https://github.com/julienma/Bridget#installation"
 }
