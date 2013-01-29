@@ -55,7 +55,7 @@ $(document).ready(function(){
         crossdomain: 'true',
         type: 'POST',
         dataType: 'jsonp',
-        timeout: 2000,
+        timeout: localStorage.authTimeout,
         // data: {},
         complete: function(xhr, textStatus) {
           //called when complete
@@ -106,7 +106,7 @@ $(document).ready(function(){
             getTemplateList();
           } else {
             console.error('API: timeout');
-            displayAlert('#step1 #alert', '<strong>Sorry, </strong>there is an issue, either with your key or the API :(', 'error');
+            displayAlert('#step1 #alert', '<strong>Sorry, </strong>there is an issue, either with your key or the API. Did you <a href="#auth" data-toggle="modal">fill your HTTP Auth login / password in</a>?', 'error');
             currentApiServer = 0;
             // focus the api key field, for easy correction
             $('#api-key-form #api-key').focus();
@@ -225,6 +225,31 @@ $(document).ready(function(){
   }
 
 /*
+  Save the http login / password with HTML5 LocalStorage
+*/
+  function saveHttpAuth () {
+    global.authLogin = $('#auth-login').val();
+    global.authPassword = $('#auth-password').val();
+    // proxy through global. as we can't use the same localStorage syntax from serverlist.js
+    localStorage.authLogin = global.authLogin;
+    localStorage.authPassword = global.authPassword;
+    localStorage.authTimeout = $('#auth-timeout').val();
+    // update API Urls with auth
+    updateApiServer();
+    $('#api-key-form #api-key').focus();
+    $('#api-key-form #api-key').select();
+  }
+
+/*
+  Display current http auth in modal
+*/
+  $('#auth').on('show', function () {
+    $('#auth-login').val(localStorage.authLogin);
+    $('#auth-password').val(localStorage.authPassword);
+    $('#auth-timeout').val(localStorage.authTimeout);
+  });
+
+/*
   disable default behavior on dropped file, and implement custom HTML5 drag and drop.
   Drop a folder on the "watch folder" section
 */
@@ -302,6 +327,7 @@ $dropZone.bind({
     return false;
   });
   $('#save-settings').click(saveSettings);
+  $('#save-auth').click(saveHttpAuth);
 
 /*
   focus local folder field at startup

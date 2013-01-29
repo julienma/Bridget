@@ -75,6 +75,28 @@
             <button id="save-settings" class="btn btn-primary btn-large" disabled="disabled">Save</button>
           </div>
 
+          <!-- HTTP Auth modal -->
+          <div id="auth" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">HTTP Auth</h3>
+          </div>
+          <div class="modal-body">
+            <form id="auth-form" class="form-inline" action="">
+              <p>If you are usually prompted to provide a login and password (a.k.a .htaccess) when accessing the API, you will need to fill them in here:</p>
+              <input class="textinput" type="text" placeholder="Login" id="auth-login">
+              <input class="textinput" type="password" placeholder="Password" id="auth-password">
+              <p></p>
+              <p>You can also try to increase the timeout (from 100 up to 10000 ms if you have a very slow connection):</p>
+              <input class="textinput" type="number" min="100" max="10000" value="2000" placeholder="Timeout (ms)" id="auth-timeout">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button class="btn btn-primary" data-dismiss="modal" id="save-auth">Save</button>
+          </div>
+          </div>
+
         </span>
 
       </div>

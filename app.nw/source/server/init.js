@@ -20,6 +20,20 @@ global.zipfile = '_bridget.zip';
 // define filetypes to ignore (won't be watched for changes, and won't be zipped)
 global.excludeFileExtension = ['zip', 'command'];
 
+// Get http auth from localStorage
+global.authLogin = '';
+global.authPassword = '';
+if (localStorage.authLogin) {
+  global.authLogin = localStorage.authLogin;
+}
+if (localStorage.authPassword) {
+  global.authPassword = localStorage.authPassword;
+}
+// define default value for timeout
+if (!localStorage.authTimeout) {
+  localStorage.authTimeout = 2000;
+}
+
 /*
 Create tray menu
 */

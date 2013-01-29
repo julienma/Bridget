@@ -1,27 +1,34 @@
-
 // Define URLs for known API servers
-var apiServer = [
-  {
-    id:'q',
-    url:'https://api.q.leadformance.com',
-    name:'Internal QA (.q)'
-  },
-  {
-    id:'c',
-    url:'https://api.c.leadformance.com',
-    name:'Client QA (.c)'
-  },
-  {
-    id:'i',
-    url:'https://api.i.leadformance.com',
-    name:'Integrator (.i)'
-  },
-  {
-    id:'s',
-    url:'https://api.s.leadformance.com',
-    name:'Staging (.s)'
-  }
-];
+var apiServer;
+
+// Make a function so we can update the list when we update the auth
+function updateApiServer() {
+  apiServer = [
+    {
+      id:'q',
+      url:'https://' + global.authLogin + ':' + global.authPassword + '@api.q.leadformance.com',
+      name:'Internal QA (.q)'
+    },
+    {
+      id:'c',
+      url:'https://' + global.authLogin + ':' + global.authPassword + '@api.c.leadformance.com',
+      name:'Client QA (.c)'
+    },
+    {
+      id:'i',
+      url:'https://' + global.authLogin + ':' + global.authPassword + '@api.i.leadformance.com',
+      name:'Integrator (.i)'
+    },
+    {
+      id:'s',
+      url:'https://' + global.authLogin + ':' + global.authPassword + '@api.s.leadformance.com',
+      name:'Staging (.s)'
+    }
+  ];
+}
+
+// Run once so we have a first reference of apiServer
+updateApiServer();
 
 /*
 Find details (url, name) about a server, given its id ('c', 'q', etc.)
