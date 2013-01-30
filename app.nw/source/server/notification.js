@@ -43,24 +43,31 @@ Usage:
 function send (notification, text, isError) {
   // Must register to send messages
   growl.register(function(success, err) {
-    if (!success)
-      throw err;
-    // Wait for register to complete before sending notifications
-    growl.sendNotification(notification, {
-      title: (isError)?'Bridget ERROR':'Bridget',
-      text: text,
-      sticky: (isError)?true:false // Stay on screen
-    }, function(success, err) { // Callback
-      if (success)
-        console.log('GROWL: OK');
-      else {
-        // fallback to standard alert() if growl is not working, but ONLY for ERRORS - don't want to annoy user
-        if(isError) {
-          alertFallback('Bridget ERROR!\n' + text);
-          // throw err;
-        }
+    if (!success) {
+      console.log('GROWL register error: '+err);
+      // fallback to standard alert() if growl is not working, but ONLY for ERRORS - don't want to annoy user
+      if(isError) {
+        alertFallback('Bridget ERROR!\n' + text);
+        // throw err;
       }
-    });
+    } else {
+      // Wait for register to complete before sending notifications
+      growl.sendNotification(notification, {
+        title: (isError)?'Bridget ERROR':'Bridget',
+        text: text,
+        sticky: (isError)?true:false // Stay on screen
+      }, function(success, err) { // Callback
+        if (success)
+          console.log('GROWL: OK');
+        else {
+          // fallback to standard alert() if growl is not working, but ONLY for ERRORS - don't want to annoy user
+          if(isError) {
+            alertFallback('Bridget ERROR!\n' + text);
+            // throw err;
+          }
+        }
+      });
+    }
   });
 }
 
