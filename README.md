@@ -8,17 +8,17 @@ Watch local template folder for changes, and auto-upload template to an associat
 
 ## Installation
 
-Current version: **v1.1** - 29/01/2013
+Current version: **v1.2** - 30/01/2013
 
 ### OSX
 
-- Download [OSX standalone .app - v1.1](http://cl.ly/0m3L0s3I322M/download/Bridget-1.1-osx.zip) (26MB)
+- Download [OSX standalone .app - v1.2](http://cl.ly/3W40201K3l29/download/Bridget-1.2-osx.zip) (25MB)
 - Unzip and move .app to /Applications
 - If you want Bridget to start automatically, move Bridget.app in the dock to create a shortcut, right-click on it, and select Options > Open at login.
 
 ### Windows
 
-- Download [Win32 standalone .exe - v1.1](http://cl.ly/2w2W2z35472n/download/Bridget-1.1-win32.zip) (23MB)
+- Download [Win32 standalone .exe - v1.2](http://cl.ly/3Z2O2S0S2637/download/Bridget-1.2-win32.zip) (22MB)
 - Unzip and double-click on .exe
 
 ### .NW Package

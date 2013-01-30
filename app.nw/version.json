@@ -1,5 +1,5 @@
 {
-  "version": "1.1",
-  "message": "Stand-alone version, available for both OSX and Win32. Includes HTTP Auth.",
+  "version": "1.2",
+  "message": "Stand-alone version, available for both OSX and Win32. Includes HTTP Auth. Added notification fallback if Growl is not installed.",
   "updateUrl": "https://github.com/julienma/Bridget#installation"
 }
