@@ -30,6 +30,8 @@ Just drag the Bridget.nw over the node-webkit binary, and zam!
 
 If you are using [Growl](http://growl.info) > 1.3, you will get notifications when uploads are done.
 
+![Bridget notifications using Growl](https://raw.github.com/julienma/Bridget/master/readme_growl.png)
+
 ### Compatibility
 
 This has been tested on OSX 10.7 and Windows 8.
@@ -37,7 +39,7 @@ It should be compatible with Windows 7 and some Linux, as long as you use the ri
 
 ## Usage
 
-![Bridget lives in the menu bar / tray](https://raw.github.com/julienma/Bridget/master/readme.png)
+![Bridget lives in the menu bar / tray](https://raw.github.com/julienma/Bridget/master/readme_menu.png)
 
 1. Add a folder to watch for changes (browse or drag and drop the target folder).
 
