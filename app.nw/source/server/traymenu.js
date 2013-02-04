@@ -52,7 +52,7 @@ function addWatchedFolder(loadedSettings, position){
   var submenu = new gui.Menu();
 
   submenu.append(new gui.MenuItem({
-    label: 'Open in Finder...',
+    label: 'Open folder...',
     click: function() {
       gui.Shell.showItemInFolder(loadedSettings[position].path);
     }
@@ -60,7 +60,7 @@ function addWatchedFolder(loadedSettings, position){
 
   // start once the upload script
   submenu.append(new gui.MenuItem({
-    label: 'Force upload to server',
+    label: 'Zip & Upload template',
     click: function() {
       require('./template.js').upload(loadedSettings[position].path, loadedSettings);
     }
@@ -69,7 +69,7 @@ function addWatchedFolder(loadedSettings, position){
   // unwatch folder (delete from settings and reload)
   submenu.append(new gui.MenuItem({type:"separator"}));
   submenu.append(new gui.MenuItem({
-    label: 'Unwatch & Remove',
+    label: 'Unwatch',
     click: function() {
       // confirm?
       var doRemove = window.confirm('Are your sure you want to remove this watched folder?\n' + loadedSettings[position].path);
