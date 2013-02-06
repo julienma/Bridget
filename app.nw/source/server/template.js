@@ -11,6 +11,8 @@ var serverlist = require('../client/serverlist.js');
 var trayMenu = require('./traymenu.js');
 // require local Notification package
 var notification = require('./notification.js');
+// require local Settings package (nconf)
+var settings = require('./settings.js');
 
 // a lock is used to create an interval between multiple file changes / uploads
 var locked = 0;
@@ -34,20 +36,20 @@ function isLocked () {
   return locked;
 }
 
-function upload (filePath, loadedSettings) {
+function upload (filePath) {
   // set a lock so we avoid uploading more than once
   lock();
 
   console.log("TEMPLATE: " + filePath);
 
   // try to find the template directory within the filePath of changed file
-  for (var i=0; i<loadedSettings.length-1; i++) {
-    if (filePath.indexOf(loadedSettings[i]['path']) !=-1) {
-      var templateDir = loadedSettings[i]['path'];
-      var templateName = loadedSettings[i]['templateName'];
+  for (var i=0; i<settings.loadedSettings.length-1; i++) {
+    if (filePath.indexOf(settings.loadedSettings[i]['path']) !=-1) {
+      var templateDir = settings.loadedSettings[i]['path'];
+      var templateName = settings.loadedSettings[i]['templateName'];
       // construct the "template upload" API Url
-      var uploadUrl = serverlist.getServerDetails(loadedSettings[i]['serverId'], serverlist.apiServer).url + '/templates/' + loadedSettings[i]['templateId'] + '.json?oauth_token=' + loadedSettings[i]['apiKey'];
-      console.log('FOUND path for template ' + loadedSettings[i]['templateName'] + ': ' + uploadUrl);
+      var uploadUrl = serverlist.getServerDetails(settings.loadedSettings[i].serverId, serverlist.apiServer).url + '/templates/' + settings.loadedSettings[i].templateId + '.json?oauth_token=' + settings.loadedSettings[i].apiKey;
+      console.log('FOUND path for template ' + settings.loadedSettings[i].templateName + ': ' + uploadUrl);
       // wait a bit that user's done all the filesystem operations before continuing
       setTimeout(function() {
         zipAndUpload(templateDir, uploadUrl, templateName);

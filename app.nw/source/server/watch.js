@@ -8,7 +8,7 @@ var notification = require('./notification.js');
 // make watcher globally available (dirty trick)
 var watchJob = {};
 
-function start (pathsToWatch, loadedSettings) {
+function start (pathsToWatch) {
     // Watch a directory or file
     console.log("Start watching for paths: " + pathsToWatch);
 
@@ -32,7 +32,7 @@ function start (pathsToWatch, loadedSettings) {
                 if ((filePath.indexOf(global.zipfile) !=-1) || template.isLocked()) {
                     console.log('WATCHR: Locked / Ignored file');
                 } else {
-                    template.upload(filePath, loadedSettings);
+                    template.upload(filePath);
                     console.log('WATCHR: Upload template!');
                 }
             }

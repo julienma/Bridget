@@ -42,7 +42,7 @@ function removeWatchedFolders() {
   }
 }
 
-function addWatchedFolder(loadedSettings, position){
+function addWatchedFolder(position){
   // add a separator as first item if this is the 1st watched folder
   if (position === 0) {
     menu.insert(new gui.MenuItem({type:"separator"}), trayPositionForWatchedFolders);
@@ -54,7 +54,7 @@ function addWatchedFolder(loadedSettings, position){
   submenu.append(new gui.MenuItem({
     label: 'Open folder...',
     click: function() {
-      gui.Shell.showItemInFolder(loadedSettings[position].path);
+      gui.Shell.showItemInFolder(settings.loadedSettings[position].path);
     }
   }));
 
@@ -62,7 +62,7 @@ function addWatchedFolder(loadedSettings, position){
   submenu.append(new gui.MenuItem({
     label: 'Zip & Upload template',
     click: function() {
-      require('./template.js').upload(loadedSettings[position].path, loadedSettings);
+      require('./template.js').upload(settings.loadedSettings[position].path, settings.loadedSettings);
     }
   }));
 
@@ -72,10 +72,10 @@ function addWatchedFolder(loadedSettings, position){
     label: 'Unwatch',
     click: function() {
       // confirm?
-      var doRemove = window.confirm('Are your sure you want to remove this watched folder?\n' + loadedSettings[position].path);
+      var doRemove = window.confirm('Are your sure you want to remove this watched folder?\n' + settings.loadedSettings[position].path);
       // if confirmed, clear 'path' key from settings, and reload everything
       if (doRemove){
-        settings.clear(loadedSettings[position].path, function (err){
+        settings.clear(settings.loadedSettings[position].path, function (err){
           console.log('UNWATCH OK');
           // reset the watched folders from tray menu, so we can reload them again
           removeWatchedFolders();
@@ -88,18 +88,18 @@ function addWatchedFolder(loadedSettings, position){
 
   // get the last folder from the path.
   // require('path').sep is platform-specific file separator. '\\' or '/'.
-  var folder = '/' + loadedSettings[position].path.split(require('path').sep).splice(-1,1);
+  var folder = '/' + settings.loadedSettings[position].path.split(require('path').sep).splice(-1,1);
 
   var item = new gui.MenuItem({
-    label: folder + '  >  ' + loadedSettings[position].templateName,
-    tooltip: loadedSettings[position].path,
-    icon: 'source/img/server-icon-' + loadedSettings[position].serverId + '.png',
+    label: folder + '  >  ' + settings.loadedSettings[position].templateName,
+    tooltip: settings.loadedSettings[position].path,
+    icon: 'source/img/server-icon-' + settings.loadedSettings[position].serverId + '.png',
     submenu: submenu
   });
   // add the new tray menu item, after separator (+1)
   menu.insert(item, trayPositionForWatchedFolders + position + 1);
 
-  // console.log("Menu - " + 'path: ' + loadedSettings[position]['path'] + ' - serverId: ' + loadedSettings[position]['serverId'] + ' - apiKey: ' + loadedSettings[position]['apiKey'] + ' - templateId: ' + loadedSettings[position]['templateId'] + ' - templateName: ' + loadedSettings[position]['templateName']);
+  // console.log("Menu - " + 'path: ' + settings.loadedSettings[position]['path'] + ' - serverId: ' + settings.loadedSettings[position]['serverId'] + ' - apiKey: ' + settings.loadedSettings[position]['apiKey'] + ' - templateId: ' + settings.loadedSettings[position]['templateId'] + ' - templateName: ' + settings.loadedSettings[position]['templateName']);
 }
 
 function create() {

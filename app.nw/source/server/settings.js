@@ -4,7 +4,10 @@ var watch = require('./watch.js');
 // require local Tray package (node-webkit's tray)
 var trayMenu = require('./traymenu.js');
 
+// hold current settings.json file name
 var currentSettingsFile;
+// public array of settings, loaded from json
+var loadedSettings = [{}];
 
 function file (f){
   nconf.file(f);
@@ -13,7 +16,6 @@ function file (f){
 
 function read (callback){
   nconf.load(function () {
-    var loadedSettings = [{}];
     var i = -1;
 
     var conf = nconf.get();
@@ -123,7 +125,7 @@ function loadAndWatchFolders() {
       // for each watched folder
       for (var i=0; i<loadedSettings.length-1; i++) {
         // add one tray menu entry
-        trayMenu.addWatchedFolder(loadedSettings, i);
+        trayMenu.addWatchedFolder(i);
         // get every paths loaded
         pathsToWatch.push(loadedSettings[i]['path']);
       }
@@ -131,7 +133,7 @@ function loadAndWatchFolders() {
     // make sure we reset watched folders (if any)
     watch.stop();
     // and watch paths
-    watch.start(pathsToWatch, loadedSettings);
+    watch.start(pathsToWatch);
   });
 }
 
@@ -140,3 +142,4 @@ exports.read = read;
 exports.save = save;
 exports.clear = clear;
 exports.loadAndWatchFolders = loadAndWatchFolders;
+exports.loadedSettings = loadedSettings;
