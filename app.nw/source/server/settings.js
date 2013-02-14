@@ -16,6 +16,8 @@ function file (f){
 
 function read (callback){
   nconf.load(function () {
+    // clear loadedSettings before reloading it
+    loadedSettings.length = 1;
     var i = -1;
 
     var conf = nconf.get();
