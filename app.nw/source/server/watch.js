@@ -32,7 +32,7 @@ function start (pathsToWatch) {
                 if ((filePath.indexOf(global.zipfile) !=-1) || template.isLocked()) {
                     console.log('WATCHR: Locked / Ignored file');
                 } else {
-                    template.upload(filePath);
+                    template.upload(filePath, changeType);
                     console.log('WATCHR: Upload template!');
                 }
             }

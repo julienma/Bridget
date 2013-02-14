@@ -29,12 +29,12 @@ function activateTrayIcon (isActive) {
 
 // reset watchedFolders in tray menu, so we can populate them again after reloading settings
 function removeWatchedFolders() {
-  // DEBUG
+/*  // DEBUG
   console.log("# TRAY ITEMS: " + menu.items.length);
   for (var key in menu.items) {
       console.log('- ' + key + ' => ' + menu.items[key].label + ' (' + menu.items[key].type + ')');
   }
-
+*/
   // let's remove all items added after initial creation (namely, watched folders). They will keep the same position be in position 1, as removing an item makes the next one moves in its position 1), but the 2 last items (separator + 'quit')
   while(menu.items.length > trayItemsAtCreation) {
     console.log("TRAY: remove item " + menu.items.length + '>' + trayItemsAtCreation);

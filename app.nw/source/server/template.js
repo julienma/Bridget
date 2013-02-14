@@ -13,22 +13,32 @@ var trayMenu = require('./traymenu.js');
 var notification = require('./notification.js');
 // require local Settings package (nconf)
 var settings = require('./settings.js');
+// require local snippet package
+var snippet = require ('./snippet.js');
 
+// timeout (ms) to wait before doing the Zip & Upload
+// it gives some time to the filesystem operations to finish before continuing
+var timeoutBeforeZip = 200;
 // a lock is used to create an interval between multiple file changes / uploads
 var locked = 0;
 
 // lock after upload, so no more than 1 upload at a time is done
-function lock() {
+function lock(doForce) {
   console.log('LOCKED');
-  locked = 1;
+  // disable further upload only if we doForce
+  if (doForce) locked = 1;
   trayMenu.activateTrayIcon(true);
 }
 
 // unlock after curl is finished
-function unlock() {
+function unlock(doForce) {
   console.log('UNLOCKED');
-  locked = 0;
-  trayMenu.activateTrayIcon(false);
+  // re-enable upload only if we doForce (to avoid unlocking by snippet uploads)
+  if (doForce) locked = 0;
+  // disable the tray icon only after a minimum time, so it can be visible for very fast operations
+  setTimeout(function() {
+    trayMenu.activateTrayIcon(false);
+  }, 500);
 }
 
 function isLocked () {
@@ -36,31 +46,149 @@ function isLocked () {
   return locked;
 }
 
-function upload (filePath) {
-  // set a lock so we avoid uploading more than once
+function upload (filePath, changeType, forceZipUpload) {
+  // set a non-blocking lock > will flash the tray icon to say there is work ongoing
   lock();
 
-  console.log("TEMPLATE: " + filePath);
+  console.log("UPLOAD: " + filePath);
 
   // try to find the template directory within the filePath of changed file
   for (var i=0; i<settings.loadedSettings.length-1; i++) {
-    if (filePath.indexOf(settings.loadedSettings[i]['path']) !=-1) {
-      var templateDir = settings.loadedSettings[i]['path'];
-      var templateName = settings.loadedSettings[i]['templateName'];
-      // construct the "template upload" API Url
-      var uploadUrl = serverlist.getServerDetails(settings.loadedSettings[i].serverId, serverlist.apiServer).url + '/templates/' + settings.loadedSettings[i].templateId + '.json?oauth_token=' + settings.loadedSettings[i].apiKey;
-      console.log('FOUND path for template ' + settings.loadedSettings[i].templateName + ': ' + uploadUrl);
-      // wait a bit that user's done all the filesystem operations before continuing
-      setTimeout(function() {
-        zipAndUpload(templateDir, uploadUrl, templateName);
-      }, 100);
+    if (filePath.indexOf(settings.loadedSettings[i].path) !=-1) {
+      var templateDir = settings.loadedSettings[i].path;
+      var templateName = settings.loadedSettings[i].templateName;
+
+      var serverId = settings.loadedSettings[i].serverId;
+      var templateId = settings.loadedSettings[i].templateId;
+      var apiKey = settings.loadedSettings[i].apiKey;
+
+      // construct the "zipped template upload" API Url
+      var uploadUrl = serverlist.getServerDetails(serverId, serverlist.apiServer).url + '/templates/' + templateId + '.json?oauth_token=' + apiKey;
+      console.log('FOUND path for template ' + templateName + ': ' + uploadUrl);
+
+      // check if extension is .html (only .html snippets should be uploaded) and if we do not forceZipUpload
+      if ((path.extname(filePath) == '.html') && (!forceZipUpload)){
+          console.log("SNIPPET UPLOAD");
+          // get snippetID: excludes the templateDir and the file extension (the full snippet name includes the path after templateDir)
+          var snippetName = filePath.replace(templateDir + path.sep, '').replace(/(?:\.([^.]+))?$/, '');
+
+          snippet.getId(templateId, snippetName, function(err, snippetId) {
+            // we don't have a list of snippet of that template
+            if(err) {
+              console.log('SNIPPET: no snippet list for template ' + templateId);
+              // force upload with standard zip&upload
+              upload(filePath, changeType, true);
+              // and exit current upload
+              return;
+            }else{
+              // if the snippet has been deleted
+              if (changeType == 'delete') {
+                // we found the id of the snippet, so we delete
+                if (snippetId) {
+                  console.log('Delete SNIPPET id: ' + snippetId + ' - ' + snippetName);
+                  snippet.del(i, snippetId, function (err, res) {
+                    if (err) {
+                      console.log('SNIPPET delete error: ' + res);
+                      // force upload with standard zip&upload
+                      upload(filePath, changeType, true);
+                      // and exit current upload
+                      return;
+                    } else {
+                      console.log('Snippet deleted');
+                      // once deleted, update the list of all snippet IDs of that template
+                      snippet.getAllIds(i, function(err, res){
+                        if(err) {
+                          console.log('Error getting snippets');
+                        } else {
+                          console.log('Retrieved ' + res + ' snippets');
+                        }
+                      });
+                      // we're done
+                      unlock();
+                    }
+                  });
+                // if we don't have a snippetId, it's only a local delete, and there is nothing to do on the server, so we're done
+                } else {
+                  console.log('Nothing to delete on server');
+                  unlock();
+                }
+              // otherwise, try to update / create the snippet
+              } else {
+                // we found the id of the snippet, so we update
+                if (snippetId) {
+                  console.log('Update SNIPPET id: ' + snippetId + ' for snippet ' + snippetName);
+                  snippet.update(i, snippetId, filePath, function (err, res) {
+                    if (err) {
+                      console.log('SNIPPET update error: ' + res);
+                      // force upload with standard zip&upload
+                      upload(filePath, changeType, true);
+                      // and exit current upload
+                      return;
+                    } else {
+                      console.log('Snippet updated');
+                      // we're done
+                      unlock();
+                    }
+                  });
+                // no id, so we create a new snippet
+                } else {
+                  console.log('Creating new SNIPPET for ' + snippetName);
+                  snippet.create(i, snippetName, filePath, function (err, res) {
+                    if (err) {
+                      console.log('SNIPPET create error: ' + res);
+                      // force upload with standard zip&upload
+                      upload(filePath, changeType, true);
+                      // and exit current upload
+                      return;
+                    } else {
+                      console.log('New snippet created for ' + snippetName + ', ID: ' + res);
+                      // once created, update the list of all snippet IDs of that template
+                      snippet.getAllIds(i, function(err, res){
+                        if(err) {
+                          console.log('Error getting snippets');
+                        } else {
+                          console.log('Retrieved ' + res + ' snippets');
+                        }
+                      });
+                      // we're done
+                      unlock();
+                    }
+                  });
+                }
+              }
+            }
+
+          });
+
+        // if we can not upload a snippet (could also be a css or picture), fallback to zip and upload everything
+        } else {
+          // set a blocking lock so we avoid uploading more than once
+          lock(true);
+
+          setTimeout(function() {
+            zipAndUpload(templateDir, uploadUrl, templateName, function () {
+                // once uploaded, get a list of all snippet IDs of that template
+                snippet.getAllIds(i, function(err, res){
+                  if(err) {
+                    console.log('Error getting snippets');
+                  } else {
+                    console.log('Retrieved ' + res + ' snippets');
+                  }
+                });
+                // and unlock to allow future uploads
+                unlock(true);
+            });
+          }, timeoutBeforeZip);
+        }
       // make sure to upload only on the 1st found occurence
       break;
     }
   }
 }
 
-function zipAndUpload(templateDir, uploadUrl, templateName) {
+function zipAndUpload(templateDir, uploadUrl, templateName, callback) {
+  console.log("ZIP AND UPLOAD!");
+
   var archive = new zip();
   var zipFiles = [];
 
@@ -90,9 +218,11 @@ function zipAndUpload(templateDir, uploadUrl, templateName) {
       }
     }
   }, function() {
+/*  // DEBUG
     for (var key in zipFiles){
       console.log('ZIP - ' + key + ' = ' + zipFiles[key].name + ' - ' + zipFiles[key].path);
     }
+*/
     // actually zip the files
     archive.addFiles(zipFiles, function (err) {
       if (err) {
@@ -107,7 +237,7 @@ function zipAndUpload(templateDir, uploadUrl, templateName) {
           } else {
             console.log('ZIP OK');
             // start upload
-            uploadWithRequest(templateDir, uploadUrl, templateName);
+            uploadWithRequest(templateDir, uploadUrl, templateName, callback);
           }
         });
       }
@@ -117,7 +247,7 @@ function zipAndUpload(templateDir, uploadUrl, templateName) {
 
 }
 
-function uploadWithRequest(templateDir, uploadUrl, templateName) {
+function uploadWithRequest(templateDir, uploadUrl, templateName, callback) {
   var templateFile = path.join(templateDir, global.zipfile);
   var fileSize;
 
@@ -145,8 +275,7 @@ function uploadWithRequest(templateDir, uploadUrl, templateName) {
           console.log('UPLOAD Failed (statuscode: ' + response.statusCode + ')');
           notification.send('Upload Failure', 'UPLOAD failed! (statuscode: ' + response.statusCode + ')', true);
         }
-        // remove lock so we can upload once again
-        unlock();
+        callback();
       });
     }
   });
