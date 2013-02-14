@@ -226,13 +226,13 @@ function zipAndUpload(templateDir, uploadUrl, templateName, callback) {
     // actually zip the files
     archive.addFiles(zipFiles, function (err) {
       if (err) {
-        console.log('ZIP Failed: ' + code);
+        console.log('ZIP Failed: ' + err);
         notification.send('Upload Failure', 'ZIP creation failed! (addFiles: ' + err + ')', true);
       } else {
         // and write it in template directory
         fs.writeFile(path.join(templateDir, global.zipfile), archive.toBuffer(), function (err) {
           if (err) {
-            console.log('ZIP Failed: ' + code);
+            console.log('ZIP Failed: ' + err);
             notification.send('Upload Failure', 'ZIP creation failed! (writeFile: ' + err + ')', true);
           } else {
             console.log('ZIP OK');
