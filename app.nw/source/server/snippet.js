@@ -90,7 +90,7 @@ function update(fromTemplate, snippetId, filePath, callback) {
         parser: rest.parsers.json,
          headers: {
           'Accept': '*/*',
-          'User-Agent': 'Restler for node.js',
+          'User-Agent': 'Bridget',
           'Content-Type': 'application/json'
         },
         data: jsonData
@@ -147,7 +147,7 @@ function create(fromTemplate, snippetName, filePath, callback) {
         parser: rest.parsers.json,
          headers: {
           'Accept': '*/*',
-          'User-Agent': 'Restler for node.js',
+          'User-Agent': 'Bridget',
           'Content-Type': 'application/json'
         },
         data: jsonData
@@ -190,7 +190,7 @@ function del(fromTemplate, snippetId, callback) {
     parser: rest.parsers.json,
      headers: {
       'Accept': '*/*',
-      'User-Agent': 'Restler for node.js',
+      'User-Agent': 'Bridget',
       'Content-Type': 'application/json'
     },
     data: jsonData
