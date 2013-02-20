@@ -52,9 +52,24 @@ function upload (filePath, changeType, forceZipUpload) {
 
   console.log("UPLOAD: " + filePath);
 
+  // reset index of the matching path
+  var i = -1;
+
   // try to find the template directory within the filePath of changed file
-  for (var i=0; i<settings.loadedSettings.length-1; i++) {
-    if (filePath.indexOf(settings.loadedSettings[i].path) !=-1) {
+  for (var j=0; j<settings.loadedSettings.length-1; j++) {
+    // we found a watched folder which is part of filePath
+    if (filePath.indexOf(settings.loadedSettings[j].path) !=-1) {
+      // if we already found another path matching (= i is already assigned)
+      if (i > -1) {
+        // we will prefer the longest one (more probability it is the good path)
+        if (settings.loadedSettings[j].path.length > settings.loadedSettings[i].path.length)
+          i = j;
+      } else i = j;
+    }
+  }
+
+    // we found the path
+    if (i > -1) {
       var templateDir = settings.loadedSettings[i].path;
       var templateName = settings.loadedSettings[i].templateName;
 
@@ -180,10 +195,7 @@ function upload (filePath, changeType, forceZipUpload) {
             });
           }, timeoutBeforeZip);
         }
-      // make sure to upload only on the 1st found occurence
-      break;
     }
-  }
 }
 
 function zipAndUpload(templateDir, uploadUrl, templateName, callback) {
