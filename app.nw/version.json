@@ -1,5 +1,5 @@
 {
-  "version": "1.2",
-  "message": "Stand-alone version, available for both OSX and Win32. Includes HTTP Auth. Added notification fallback if Growl is not installed.",
+  "version": "1.3",
+  "message": "Now includes single snippet (*.html) uploads, which are waaaay faster than standard zip & upload (2s vs 15-20s). Can also upload multiple snippets in parallel.",
   "updateUrl": "https://github.com/julienma/Bridget#installation"
 }

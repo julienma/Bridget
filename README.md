@@ -8,17 +8,17 @@ Watch local template folder for changes, and auto-upload template to an associat
 
 ## Installation
 
-Current version: **v1.2** - 30/01/2013
+Current version: **v1.3** - 20/02/2013
 
 ### OSX
 
-- Download [OSX standalone .app - v1.2](http://cl.ly/3W40201K3l29/download/Bridget-1.2-osx.zip) (25MB)
+- Download [OSX standalone .app - v1.3](http://cl.ly/3o2q2W0N3F3u/download/Bridget-1.3-osx.zip) (25MB)
 - Unzip and move .app to /Applications
 - If you want Bridget to start automatically, move Bridget.app in the dock to create a shortcut, right-click on it, and select Options > Open at login.
 
 ### Windows
 
-- Download [Win32 standalone .exe - v1.2](http://cl.ly/3Z2O2S0S2637/download/Bridget-1.2-win32.zip) (22MB)
+- Download [Win32 standalone .exe - *v1.2*](http://cl.ly/3Z2O2S0S2637/download/Bridget-1.2-win32.zip) (22MB)
 - Unzip and double-click on .exe
 
 ### .NW Package
@@ -45,7 +45,10 @@ It should be compatible with Windows 7 and some Linux, as long as you use the ri
 
 2. Enter the **write_templates** API key, refresh and select the target template slot, save.
 
-3. Any change done in the watched folder will be uploaded within 30s to the template slot.
+3. Any change done in the watched folder will be uploaded in few seconds to the template slot.
+
+> - For any change on .html snippets: the 1st upload will always be a full zip, and might take 20-30s. *Subsequent uploads should take less than 2s to upload the changes.*
+> - For any change on other filetypes (pictures, css, js), the upload will always be done through a standard zip. It usually takes 20-30s to complete; could be more if you have lots of resources.
 
 ### Settings file
 
