@@ -22,6 +22,16 @@ var timeoutBeforeZip = 200;
 // a lock is used to create an interval between multiple file changes / uploads
 var locked = 0;
 
+// prepare HTML5 audio container (to play upload confirmation sound)
+var sound = {
+  audio: null,
+  play: function(path) {
+    this.audio = new window.Audio(path);
+    if(this.audio !== null) this.audio.pause();
+    this.audio.play();
+  }
+};
+
 // lock after upload, so no more than 1 upload at a time is done
 function lock(doForce) {
   console.log('LOCKED');
@@ -30,7 +40,7 @@ function lock(doForce) {
   trayMenu.activateTrayIcon(true);
 }
 
-// unlock after curl is finished
+// unlock after upload is finished
 function unlock(doForce) {
   console.log('UNLOCKED');
   // re-enable upload only if we doForce (to avoid unlocking by snippet uploads)
@@ -38,7 +48,8 @@ function unlock(doForce) {
   // disable the tray icon only after a minimum time, so it can be visible for very fast operations
   setTimeout(function() {
     trayMenu.activateTrayIcon(false);
-  }, 500);
+    sound.play('sound/detuned_affirm.wav');
+  }, 100);
 }
 
 function isLocked () {

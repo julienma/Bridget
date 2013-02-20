@@ -47,7 +47,7 @@ It should be compatible with Windows 7 and some Linux, as long as you use the ri
 
 3. Any change done in the watched folder will be uploaded in few seconds to the template slot.
 
-> - For any change on .html snippets: the 1st upload will always be a full zip, and might take 20-30s. *Subsequent uploads should take less than 2s to upload the changes.*
+> - For any change on .html snippets: the 1st upload will always be a full zip, and might take 20-30s. **Subsequent uploads should take less than 2s to upload the changes.**
 > - For any change on other filetypes (pictures, css, js), the upload will always be done through a standard zip. It usually takes 20-30s to complete; could be more if you have lots of resources.
 
 ### Settings file
@@ -140,3 +140,4 @@ For development, you can run _test.command instead, it will just package an _app
 # Licence
 
 Tray icon using Entypo pictograms by Daniel Bruce — www.entypo.com
+Upload confirmation sound by www.narfstuff.co.uk
