@@ -9,7 +9,7 @@ function check() {
       } else {
         if (global.currentVersion != res.version) {
           console.log('NEW VERSION available: ' + res.version);
-          if(window.confirm('A new version of Bridget is available: \n"' + res.message + '"\n\nClick OK to update from version ' + global.currentVersion + ' to ' + res.version + '.\n(Tip: you should do it!)')) {
+          if(window.confirm('A new version of Bridget is available: ' + res.version + '\n"' + res.message + '"\n\nClick OK to update from version ' + global.currentVersion + ' to ' + res.version + '.\n(Tip: you should do it!)')) {
             gui.Shell.openExternal(res.updateUrl);
           }
         } else console.log('VERSION up-to-date: ' + res.version);
