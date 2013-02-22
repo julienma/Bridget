@@ -18,7 +18,7 @@ var snippet = require ('./snippet.js');
 
 // timeout (ms) to wait before doing the Zip & Upload
 // it gives some time to the filesystem operations to finish before continuing
-var timeoutBeforeZip = 200;
+var timeoutBeforeZip = 1000;
 // a lock is used to create an interval between multiple file changes / uploads
 var locked = 0;
 
