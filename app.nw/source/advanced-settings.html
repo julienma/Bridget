@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Limelight|Flamenco|Federo|Yesteryear|Josefin Sans|Spinnaker|Sansita One|Handlee|Droid Sans|Oswald:400,300,700"
+    media="screen" rel="stylesheet" type="text/css" />
+ -->
+    <link href="css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css"
+    />
+    <link href="css/style.css" media="screen" rel="stylesheet" type="text/css" />
+    <!-- Typekit fonts require an account and a kit containing the fonts used. see https://typekit.com/plans
+    for details. <script type="text/javascript" src="//use.typekit.net/YOUR_KIT_ID.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  -->
+    <script src="client/jquery-1.8.3.min.js"></script>
+    <script src="client/bootstrap.min.js"></script>
+    <script src="client/advanced-settings.js"></script>
+
+    <title>Bridget | Settings</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row-fluid">
+
+        <span class="span12">
+
+          <!-- Advanced settings modal -->
+          <div id="advanced-settings" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Advanced Settings</h3>
+          </div>
+          <div class="modal-body">
+            <form id="advanced-settings-form" class="form-inline" action="">
+              <p>Delay before zipping &amp; uploading the whole template (default 1000ms):</p>
+              <input class="textinput" type="number" min="100" max="30000" step="100" value="1000" placeholder="Delay (ms)" id="settings-upload-delay">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button class="btn btn-primary" data-dismiss="modal" id="save-advanced-settings">Save</button>
+          </div>
+          </div>
+
+        </span>
+
+      </div>
+    </div>
+  </body>
+
+</html>

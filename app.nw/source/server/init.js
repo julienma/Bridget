@@ -2,7 +2,7 @@
 INIT
 */
 
-global.currentVersion = "1.3.1";
+global.currentVersion = "1.4";
 
 // check if an update is available
 var version = require('./server/version.js');
@@ -32,6 +32,13 @@ if (localStorage.authPassword) {
 // define default value for timeout
 if (!localStorage.authTimeout) {
   localStorage.authTimeout = 2000;
+}
+
+// delay (ms) to wait before doing the Zip & Upload (default to 1000ms)
+// it gives some time to the filesystem operations to finish before continuing
+global.settingsUploadDelay = 1000;
+if (localStorage.settingsUploadDelay) {
+  global.settingsUploadDelay = localStorage.settingsUploadDelay;
 }
 
 /*

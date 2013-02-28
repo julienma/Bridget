@@ -16,9 +16,6 @@ var settings = require('./settings.js');
 // require local snippet package
 var snippet = require ('./snippet.js');
 
-// timeout (ms) to wait before doing the Zip & Upload
-// it gives some time to the filesystem operations to finish before continuing
-var timeoutBeforeZip = 1000;
 // a lock is used to create an interval between multiple file changes / uploads
 var locked = 0;
 
@@ -204,7 +201,7 @@ function upload (filePath, changeType, forceZipUpload) {
                 // and unlock to allow future uploads
                 unlock(true);
             });
-          }, timeoutBeforeZip);
+          }, global.settingsUploadDelay);
         }
     }
 }

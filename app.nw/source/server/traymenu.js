@@ -133,6 +133,24 @@ function create() {
   // add quit button
   menu.append(new gui.MenuItem({type:"separator"}));
   menu.append(new gui.MenuItem({
+    label: 'Advanced settings...',
+    click: function(){
+      var winSettings = gui.Window.open('advanced-settings.html', {
+        "title":"Bridget",
+        "toolbar": false,
+        "width": 600,
+        "height": 280,
+        "position": "mouse",
+        "min_width": 600,
+        "min_height": 280,
+        "max_width": 600,
+        "max_height": 280,
+        "always-on-top": true,
+        "frame": true
+      });
+    }
+  }));
+  menu.append(new gui.MenuItem({
     label: 'Submit a bug...',
     click: function(){
       // Open URL with default browser.
