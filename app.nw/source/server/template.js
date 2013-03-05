@@ -15,6 +15,8 @@ var notification = require('./notification.js');
 var settings = require('./settings.js');
 // require local snippet package
 var snippet = require ('./snippet.js');
+// require local livereload-server package
+var LRServer = require ('./livereload-server.js');
 
 // a lock is used to create an interval between multiple file changes / uploads
 var locked = 0;
@@ -128,12 +130,16 @@ function upload (filePath, changeType, forceZipUpload) {
                       });
                       // we're done
                       unlock();
+                      // send livereload request to refresh browsers
+                      LRServer.sendReloadRequests(filePath);
                     }
                   });
                 // if we don't have a snippetId, it's only a local delete, and there is nothing to do on the server, so we're done
                 } else {
                   console.log('Nothing to delete on server');
                   unlock();
+                  // send livereload request to refresh browsers
+                  LRServer.sendReloadRequests(filePath);
                 }
               // otherwise, try to update / create the snippet
               } else {
@@ -151,6 +157,8 @@ function upload (filePath, changeType, forceZipUpload) {
                       console.log('Snippet updated');
                       // we're done
                       unlock();
+                      // send livereload request to refresh browsers
+                      LRServer.sendReloadRequests(filePath);
                     }
                   });
                 // no id, so we create a new snippet
@@ -175,6 +183,8 @@ function upload (filePath, changeType, forceZipUpload) {
                       });
                       // we're done
                       unlock();
+                      // send livereload request to refresh browsers
+                      LRServer.sendReloadRequests(filePath);
                     }
                   });
                 }
@@ -187,6 +197,8 @@ function upload (filePath, changeType, forceZipUpload) {
         } else {
           // set a blocking lock so we avoid uploading more than once
           lock(true);
+          // send livereload request to refresh browsers BEFORE uploading, so it's refreshed immediately
+          LRServer.sendReloadRequests(filePath);
 
           setTimeout(function() {
             zipAndUpload(templateDir, uploadUrl, templateName, function () {
