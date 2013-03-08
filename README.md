@@ -112,6 +112,12 @@ npm install node-native-zip
 npm install dive
 ```
 
+- [livereload-server](https://github.com/livereload/livereload-server): Implementation of the server side of the LiveReload protocol in Node.js.
+
+```
+npm install livereload-server
+```
+
 - [Node Growler](https://github.com/betamos/Node-Growler): A Growl server for node.js which sends notifications to remote and local Growl clients using GNTP. Needs [Growl](http://growl.info) > 1.3.
 
 ```

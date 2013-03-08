@@ -4,8 +4,6 @@
   - send 'reload' requests to LR Clients
 */
 
-// TODO: catch thrown errors
-
 // ANSI color codes for console.log(). Always 'reset' after a color.
 var red   = '\u001b[31m',
     green = '\u001b[32m',
@@ -17,6 +15,8 @@ var fs   = require('fs');
 var path = require('path');
 var crypto = require('crypto');
 var LRWebSocketServer = require('livereload-server');
+// require local Notification package
+var notification = require('./notification.js');
 
 // id, name, version identifies your app;
 // protocols specifies the versions of subprotocols you support
@@ -24,6 +24,12 @@ var server = new LRWebSocketServer({ id: "com.leadformance.bridget", name: "Brid
 
 // array of all LR clients connected to server (could be javascript snippet or browser extension)
 var connections = [];
+
+// Exception handling, as livereload-server is throwing them out...
+process.on('uncaughtException', function(err) {
+  console.log(red + 'ERROR: ' + err + reset);
+  notification.send('Livereload error', 'Livereload error (' + err + ')', true);
+});
 
 // calculate a random salt for SHA1 signature generation
 function random8() {
@@ -69,7 +75,7 @@ function localPathForUrlPath(urlPath) {
 function sendReloadRequests (filePath) {
   console.log(green + "Reload request triggered by " + reset + filePath);
 
-  // TODO: win compatibility: under windows, modify \\ with /
+  // TODO: win compatibility: under windows, modify \\ with / (?)
 
   // encode filepath, so it travels safely on the interweb
   filePath = encodeURI(filePath);
@@ -100,7 +106,7 @@ Socket server events
 
 // LR client connected
 server.on('connected', function(connection) {
-  console.log(blue + "Client connected (%s)" + reset, connection.id);
+  console.log(blue + "Client connected (" + connection.id + ")" + reset);
   // add this connection to the array of connections
   connections.push(connection);
 });
@@ -108,7 +114,7 @@ server.on('connected', function(connection) {
 
 // LR client disconnected
 server.on('disconnected', function(connection) {
-  console.log(blue + "Client disconnected (%s)" + reset, connection.id);
+  console.log(blue + "Client disconnected (" + connection.id + ")" + reset);
   // find the current connection in the array of connections
   var index = connections.indexOf(connection.id);
   // and remove it
@@ -120,23 +126,28 @@ server.on('disconnected', function(connection) {
 
 // LR client send a command (like 'info')
 server.on('command', function(connection, message) {
-  console.log("Received command %s: %j", message.command, message);
+  console.log("Received command " + message.command + ": %j" + message);
 });
 
 
 server.on('error', function(err, connection) {
-  console.log("Error (%s): %s", connection.id, err.message);
+  console.log("Error (" + connection.id + "): " + err.message);
+  notification.send('Livereload error', 'Livereload error (' + err.message + ')', true);
 });
 
 
 // LR client request livereload.js
 server.on('livereload.js', function(request, response) {
   console.log("Serving livereload.js.");
-  fs.readFile(path.join(__dirname, '../client/livereload.js'), 'utf8', function(err, data) {
-    if (err) throw err;
-
-    response.writeHead(200, {'Content-Length': data.length, 'Content-Type': 'text/javascript'});
-    response.end(data);
+  var jsPath = path.join(__dirname, '../client/livereload.js');
+  fs.readFile(jsPath, 'utf8', function(err, data) {
+    if (err) {
+      console.log(red + 'ERROR: cannot read ' + jsPath + reset + ' (' + err + ')');
+      notification.send('Livereload error', 'Livereload error: cannot read ' + jsPath + ' (' + err + ')', true);
+    } else {
+      response.writeHead(200, {'Content-Length': data.length, 'Content-Type': 'text/javascript'});
+      response.end(data);
+    }
   });
 });
 
@@ -145,54 +156,56 @@ server.on('livereload.js', function(request, response) {
 server.on('httprequest', function(url, request, response) {
   console.log("HTTPRequest: ");
   // check if we want to serve a local cached version of the requested file
-  var getHTTPCodeForLocalResource = localPathForUrlPath(url.pathname);
+  var getLocalResource = localPathForUrlPath(url.pathname);
 
   // we got a HTTP 200: we want to cache that file locally
-  if(getHTTPCodeForLocalResource[0] == 200) {
-    console.log(green + 'Local cache exists => 200 - ' + getHTTPCodeForLocalResource[1] + reset);
-    fs.readFile(getHTTPCodeForLocalResource[1], function(err, data) { // DEBUG: use 'mypath'?
-      if (err) throw err;
-      // TODO: catch error if file does not exist
+  if(getLocalResource[0] == 200) {
+    console.log(green + 'Local cache exists => 200 - ' + getLocalResource[1] + reset);
+    // default headers to send
+    var statusCode = 404,
+        headers,
+        encoding;
 
-      // get the file extension
-      var ext = path.extname(getHTTPCodeForLocalResource[1]);
-      // will store the header to send
-      var statusCode,
-          headers;
-      console.log('Ext: '+cyan+ext+reset+' for file ' + cyan + getHTTPCodeForLocalResource[1]+reset);
+    fs.readFile(getLocalResource[1], function(err, data) {
+      if (err) {
+        console.log(red + 'ERROR: cannot read ' + getLocalResource[1] + reset + ' (' + err + ')');
+      } else {
+        // get the file extension
+        var ext = path.extname(getLocalResource[1]);
+        console.log('Ext: '+cyan+ext+reset+' for file ' + cyan + getLocalResource[1]+reset);
 
-      // if file extension is known, set the MIME type accordingly
-      switch (ext) {
-        // TODO: more file extension / MIME Types?
-        case('.css'):
-          console.log('This is CSS');
-          statusCode = 200;
-          headers = {'Content-Length': data.length, 'Content-Type': 'text/css'};
-          break;
-        // in case of known picture formats, just use the file extension as MIME type, minus leading '.'
-        case('.png'):
-        case('.gif'):
-        case('.jpeg'):
-          console.log('This is an IMAGE: ' + cyan+ext+reset);
-          statusCode = 200;
-          headers = {'Content-Length': data.length, 'Content-Type': 'image/' + ext.replace('.','')};
-          break;
-        // in case of .jpg, force the MIME type to 'image/jpeg'
-        case('.jpg'):
-          console.log('This is an IMAGE: ' + cyan+ext+reset);
-          statusCode = 200;
-          headers = {'Content-Length': data.length, 'Content-Type': 'image/jpeg'};
-          break;
-        default:
-          statusCode = 404;
-          headers = '';
-          // empty the data so it is not sent with a 404
-          data = '';
+        // if file extension is known, set the MIME type accordingly
+        switch (ext) {
+          case('.css'):
+            console.log('This is CSS');
+            statusCode = 200;
+            headers = {'Content-Length': data.length, 'Content-Type': 'text/css'};
+            encoding = 'utf8';
+            break;
+          // in case of known picture formats, just use the file extension as MIME type, minus leading '.'
+          case('.png'):
+          case('.gif'):
+          case('.jpeg'):
+            console.log('This is an IMAGE: ' + cyan+ext+reset);
+            statusCode = 200;
+            headers = {'Content-Length': data.length, 'Content-Type': 'image/' + ext.replace('.','')};
+            break;
+          // in case of .jpg, force the MIME type to 'image/jpeg'
+          case('.jpg'):
+            console.log('This is an IMAGE: ' + cyan+ext+reset);
+            statusCode = 200;
+            headers = {'Content-Length': data.length, 'Content-Type': 'image/jpeg'};
+            break;
+          default:
+            // empty the data so it is not sent with a 404
+            data = '';
+        }
       }
 
       // send the actual response
       response.writeHead(statusCode, headers);
-      response.end(data);
+      response.write(data, encoding);
+      response.end();
     });
 
   // we don't want to force a local version of the file
@@ -207,10 +220,11 @@ server.on('httprequest', function(url, request, response) {
 // LR server starts listening
 server.listen(function(err) {
   if (err) {
-      console.error("Listening failed: %s", err.message);
+      console.error("Listening failed: " + err.message);
+      notification.send('Livereload error', 'Livereload can\'t start listening (' + err.message + ')', true);
       return;
   }
-  console.log("Listening on port %d.", server.port);
+  console.log("Listening on port " + server.port);
 });
 
 exports.sendReloadRequests = sendReloadRequests;

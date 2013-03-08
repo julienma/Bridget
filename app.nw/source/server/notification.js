@@ -24,6 +24,9 @@ growl.setNotifications({
   },
   'Watch Failure': {
     icon: iconFailure
+  },
+  'Livereload error': {
+    icon: iconFailure
   }
 });
 

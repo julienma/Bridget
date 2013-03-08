@@ -98,7 +98,7 @@ function upload (filePath, changeType, forceZipUpload) {
           var snippetName = filePath.replace(templateDir + path.sep, '').replace(/(?:\.([^.]+))?$/, '');
 
           snippet.getId(templateId, snippetName, function(err, snippetId) {
-            // we don't have a list of snippet of that template
+            // we don't have a list of snippet for that template
             if(err) {
               console.log('SNIPPET: no snippet list for template ' + templateId);
               // force upload with standard zip&upload
@@ -138,8 +138,6 @@ function upload (filePath, changeType, forceZipUpload) {
                 } else {
                   console.log('Nothing to delete on server');
                   unlock();
-                  // send livereload request to refresh browsers
-                  LRServer.sendReloadRequests(filePath);
                 }
               // otherwise, try to update / create the snippet
               } else {
