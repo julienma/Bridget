@@ -11,13 +11,13 @@ Watch local template folder for changes, and auto-upload template to an associat
 Current version: **v1.4** - 28/02/2013
 View [Changelog](https://github.com/julienma/Bridget/wiki)
 
-### OSX
+### OSX (32bit, 10.7+)
 
 - Download [OSX standalone .app - v1.4](http://cl.ly/371O021i3m0y/download/Bridget-1.4-osx.zip) (25MB)
 - Unzip and move .app to /Applications
 - If you want Bridget to start automatically, move Bridget.app in the dock to create a shortcut, right-click on it, and select Options > Open at login.
 
-### Windows
+### Windows (32bit)
 
 - Download [Win32 standalone .exe - v1.4](http://cl.ly/330S2J3J0A0E/download/Bridget-1.4-win32.zip) (22MB)
 - Unzip and double-click on .exe
