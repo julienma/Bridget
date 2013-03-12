@@ -23,8 +23,17 @@ var trayItemsAtCreation;
 var trayPositionForWatchedFolders = 1;
 
 // switch tray icon depending on bool isActive
-function activateTrayIcon (isActive) {
+function activateTrayIcon (isActive, actionLabel) {
   tray.icon = 'source/img/tray-icon' + ((isActive)?'-active':'') + '.png';
+
+  var currentActionMenu = menu.items[0];
+  if(isActive) {
+    currentActionMenu.enabled = false;
+    currentActionMenu.label = actionLabel;
+  } else {
+    currentActionMenu.enabled = true;
+    currentActionMenu.label = 'Watch a folder...';
+  }
 }
 
 // reset watchedFolders in tray menu, so we can populate them again after reloading settings

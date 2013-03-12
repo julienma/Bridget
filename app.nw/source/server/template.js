@@ -30,11 +30,11 @@ var sound = {
 };
 
 // lock after upload, so no more than 1 upload at a time is done
-function lock(doForce) {
+function lock(doForce, actionLabel) {
   console.log('LOCKED');
   // disable further upload only if we doForce
   if (doForce) locked = 1;
-  trayMenu.activateTrayIcon(true);
+  trayMenu.activateTrayIcon(true, actionLabel);
 }
 
 // unlock after upload is finished
@@ -56,7 +56,7 @@ function isLocked () {
 
 function upload (filePath, changeType, forceManualUpload, forceZipUpload) {
   // set a non-blocking lock > will flash the tray icon to say there is work ongoing
-  lock();
+  lock(false, 'Updating ' + filePath.split(path.sep).splice(-1,1) + '...');
 
   console.log("UPLOAD: " + filePath);
 
@@ -186,7 +186,7 @@ function upload (filePath, changeType, forceManualUpload, forceZipUpload) {
         // if we can not upload a snippet (could also be a css or picture), fallback to zip and upload everything
         } else {
           // set a blocking lock so we avoid uploading more than once
-          lock(true);
+          lock(true, 'Uploading /' + templateDir.split(path.sep).splice(-1,1) + '...');
 
           // construct the "zipped template upload" API Url
           var uploadUrl = serverlist.getServerDetails(serverId, serverlist.apiServer).url + '/templates/' + templateId + '.json?oauth_token=' + apiKey;
