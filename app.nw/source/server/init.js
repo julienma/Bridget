@@ -34,6 +34,12 @@ if (!localStorage.authTimeout) {
   localStorage.authTimeout = 2000;
 }
 
+// autoupload preference
+global.settingsAutoUpload = 'false';
+if (localStorage.settingsAutoUpload) {
+  global.settingsAutoUpload = localStorage.settingsAutoUpload;
+}
+
 // delay (ms) to wait before doing the Zip & Upload (default to 1000ms)
 // it gives some time to the filesystem operations to finish before continuing
 global.settingsUploadDelay = 1000;

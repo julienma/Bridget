@@ -19,7 +19,7 @@
     <script src="client/bootstrap.min.js"></script>
     <script src="client/advanced-settings.js"></script>
 
-    <title>Bridget | Settings</title>
+    <title>Bridget | Preferences</title>
   </head>
 
   <body>
@@ -32,10 +32,15 @@
           <div id="advanced-settings" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Advanced Settings</h3>
+            <h3 id="myModalLabel">Preferences</h3>
           </div>
           <div class="modal-body">
             <form id="advanced-settings-form" class="form-inline" action="">
+              <label class="checkbox">
+                <input type="checkbox" id="settings-auto-upload" name="auto-upload">
+                <span>Auto-upload template on change</span>
+              </label>
+              <p></p>
               <p>Delay before zipping &amp; uploading the whole template (default 1000ms):</p>
               <input class="textinput" type="number" min="100" max="30000" step="100" value="1000" placeholder="Delay (ms)" id="settings-upload-delay">
             </form>

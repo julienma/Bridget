@@ -51,18 +51,18 @@ function addWatchedFolder(position){
   // Add actions submenu
   var submenu = new gui.Menu();
 
-  submenu.append(new gui.MenuItem({
-    label: 'Open folder...',
-    click: function() {
-      gui.Shell.showItemInFolder(settings.loadedSettings[position].path);
-    }
-  }));
-
   // start once the upload script
   submenu.append(new gui.MenuItem({
     label: 'Zip & Upload template',
     click: function() {
-      require('./template.js').upload(settings.loadedSettings[position].path, settings.loadedSettings);
+      require('./template.js').upload(settings.loadedSettings[position].path, settings.loadedSettings, true, false);
+    }
+  }));
+
+  submenu.append(new gui.MenuItem({
+    label: 'Open folder...',
+    click: function() {
+      gui.Shell.showItemInFolder(settings.loadedSettings[position].path);
     }
   }));
 
@@ -72,7 +72,7 @@ function addWatchedFolder(position){
     label: 'Unwatch',
     click: function() {
       // confirm?
-      var doRemove = window.confirm('Are your sure you want to remove this watched folder?\n' + settings.loadedSettings[position].path);
+      var doRemove = window.confirm('Are you sure you want to remove this watched folder?\n' + settings.loadedSettings[position].path);
       // if confirmed, clear 'path' key from settings, and reload everything
       if (doRemove){
         settings.clear(settings.loadedSettings[position].path, function (err){
@@ -130,10 +130,20 @@ function create() {
     }
   }));
 
-  // add quit button
   menu.append(new gui.MenuItem({type:"separator"}));
+
   menu.append(new gui.MenuItem({
-    label: 'Advanced settings...',
+    label: 'I have a suggestion / bug...',
+    click: function(){
+      // Open URL with default browser.
+      gui.Shell.openExternal('https://github.com/julienma/Bridget/issues');
+    }
+  }));
+
+  menu.append(new gui.MenuItem({type:"separator"}));
+
+  menu.append(new gui.MenuItem({
+    label: 'Preferences...',
     click: function(){
       var winSettings = gui.Window.open('advanced-settings.html', {
         "title":"Bridget",
@@ -148,13 +158,6 @@ function create() {
         "always-on-top": true,
         "frame": true
       });
-    }
-  }));
-  menu.append(new gui.MenuItem({
-    label: 'Submit a bug...',
-    click: function(){
-      // Open URL with default browser.
-      gui.Shell.openExternal('https://github.com/julienma/Bridget/issues');
     }
   }));
 

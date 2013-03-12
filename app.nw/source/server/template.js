@@ -54,7 +54,7 @@ function isLocked () {
   return locked;
 }
 
-function upload (filePath, changeType, forceZipUpload) {
+function upload (filePath, changeType, forceManualUpload, forceZipUpload) {
   // set a non-blocking lock > will flash the tray icon to say there is work ongoing
   lock();
 
@@ -85,10 +85,6 @@ function upload (filePath, changeType, forceZipUpload) {
       var templateId = settings.loadedSettings[i].templateId;
       var apiKey = settings.loadedSettings[i].apiKey;
 
-      // construct the "zipped template upload" API Url
-      var uploadUrl = serverlist.getServerDetails(serverId, serverlist.apiServer).url + '/templates/' + templateId + '.json?oauth_token=' + apiKey;
-      console.log('FOUND path for template ' + templateName + ': ' + uploadUrl);
-
       // check if extension is .html (only .html snippets should be uploaded) and if we do not forceZipUpload
       if ((path.extname(filePath) == '.html') && (!forceZipUpload)){
           console.log("SNIPPET UPLOAD");
@@ -99,8 +95,12 @@ function upload (filePath, changeType, forceZipUpload) {
             // we don't have a list of snippet of that template
             if(err) {
               console.log('SNIPPET: no snippet list for template ' + templateId);
+
+              // TODO: récupérer liste all ID snippets, relancer l'upload sans forcer
+              // TODO: dans getAllIds, pensez à nettoyer les snippets en trop en distant par rapport au local (?)
+
               // force upload with standard zip&upload
-              upload(filePath, changeType, true);
+              upload(filePath, changeType, false, true);
               // and exit current upload
               return;
             }else{
@@ -113,7 +113,7 @@ function upload (filePath, changeType, forceZipUpload) {
                     if (err) {
                       console.log('SNIPPET delete error: ' + res);
                       // force upload with standard zip&upload
-                      upload(filePath, changeType, true);
+                      upload(filePath, changeType, false, true);
                       // and exit current upload
                       return;
                     } else {
@@ -144,7 +144,7 @@ function upload (filePath, changeType, forceZipUpload) {
                     if (err) {
                       console.log('SNIPPET update error: ' + res);
                       // force upload with standard zip&upload
-                      upload(filePath, changeType, true);
+                      upload(filePath, changeType, false, true);
                       // and exit current upload
                       return;
                     } else {
@@ -160,7 +160,7 @@ function upload (filePath, changeType, forceZipUpload) {
                     if (err) {
                       console.log('SNIPPET create error: ' + res);
                       // force upload with standard zip&upload
-                      upload(filePath, changeType, true);
+                      upload(filePath, changeType, false, true);
                       // and exit current upload
                       return;
                     } else {
@@ -188,8 +188,13 @@ function upload (filePath, changeType, forceZipUpload) {
           // set a blocking lock so we avoid uploading more than once
           lock(true);
 
+          // construct the "zipped template upload" API Url
+          var uploadUrl = serverlist.getServerDetails(serverId, serverlist.apiServer).url + '/templates/' + templateId + '.json?oauth_token=' + apiKey;
+          console.log('FOUND path for template ' + templateName + ': ' + uploadUrl);
+
           setTimeout(function() {
-            zipAndUpload(templateDir, uploadUrl, templateName, function () {
+            zipAndUpload(templateDir, uploadUrl, templateName, forceManualUpload, function (err) {
+              if(!(err instanceof Error)) {
                 // once uploaded, get a list of all snippet IDs of that template
                 snippet.getAllIds(i, function(err, res){
                   if(err) {
@@ -198,15 +203,24 @@ function upload (filePath, changeType, forceZipUpload) {
                     console.log('Retrieved ' + res + ' snippets');
                   }
                 });
-                // and unlock to allow future uploads
-                unlock(true);
+              }
+              // and unlock to allow future uploads
+              unlock(true);
             });
           }, global.settingsUploadDelay);
         }
     }
 }
 
-function zipAndUpload(templateDir, uploadUrl, templateName, callback) {
+function zipAndUpload(templateDir, uploadUrl, templateName, forceManualUpload, callback) {
+
+  // cancel if autoupload is not activated, OR continue anyway if manualUpload
+  if(global.settingsAutoUpload != 'true' && !forceManualUpload) {
+    console.log("############# NOOO autoupload: " + forceManualUpload);
+    callback(new Error('Autoupload NOT activated'));
+    return;
+  }
+
   console.log("ZIP AND UPLOAD!");
 
   var archive = new zip();
