@@ -39,7 +39,7 @@ function start (pathsToWatch) {
         },
         next: function(err,watchers){
             console.log('watching for all our paths has completed', arguments); // arguments = array with all settings
-            notification.send('Watch Success', 'I\'m now watching your folders. Rock on!');
+            notification.send('Watch Success', 'I\'m now watching your folders. \nRock on! \n\n(v' + global.currentVersion + ')');
             watchJob = watchers;
         },
         ignoreHiddenFiles: true, // ignore files which filename starts with a .
