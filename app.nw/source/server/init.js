@@ -2,7 +2,7 @@
 INIT
 */
 
-global.currentVersion = "1.4";
+global.currentVersion = "1.4.1";
 
 // check if an update is available
 var version = require('./server/version.js');

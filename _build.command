@@ -16,5 +16,11 @@ cp -R /Applications/node-webkit.app ./build/Bridget.app
 cp -R ./custom_package_Contents/ ./build/Bridget.app/Contents/
 cp -R ./app.nw ./build/Bridget.app/Contents/Resources
 
+# Build for OSX 10.6
+rm -R ./build/Bridget-10.6.app
+cp -R /Applications/node-webkit-10.6.app ./build/Bridget-10.6.app
+cp -R ./custom_package_Contents/ ./build/Bridget-10.6.app/Contents/
+cp -R ./app.nw ./build/Bridget-10.6.app/Contents/Resources
+
 open ./build/Bridget.app
 exit

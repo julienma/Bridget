@@ -1,5 +1,5 @@
 {
-  "version": "1.4",
-  "message": "Added advanced settings dialog, so you can customize the delay before zipping & uploading.",
+  "version": "1.4.1",
+  "message": "New option to dis/enable auto-upload of a full template on change (DISABLED by default). HTML snippets are still sync'd in real-time after initial upload.",
   "updateUrl": "https://github.com/julienma/Bridget#installation"
 }
